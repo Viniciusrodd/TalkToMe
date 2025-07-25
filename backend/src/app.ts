@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import router from './routes/routes';
 
 // Config dotenv
 dotenv.config();
@@ -22,5 +23,9 @@ app.use(
         credentials: true,
     })
 );
+
+// router
+app.use('/', router);
+
 
 export default app;
