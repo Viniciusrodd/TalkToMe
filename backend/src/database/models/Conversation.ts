@@ -3,29 +3,30 @@ import { DataTypes } from "sequelize";
 import connection from "../connection/connection";
 import { v4 } from "uuid";
 
-const User = connection.define('Users', {
+const Conversation = connection.define('Conversations', {
     id:{
         type: DataTypes.CHAR(36),
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true
     },
-    name:{
+    title:{
         type: DataTypes.STRING(100),
-    },
-    email:{
-        type: DataTypes.STRING(100),
-        unique: true,
         allowNull: false
     },
-    password: {
-        type: DataTypes.STRING(150),
+    userId:{
+        type: DataTypes.CHAR(36),
         allowNull: false
-    }
+    },
+    model: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        defaultValue: 'mistral'
+    }    
 }, {
     timestamps: true,
-    tableName: 'Users'
+    tableName: 'Conversations'
 });
 
 
-export default User;
+export default Conversation;
