@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import router from './routes/routes';
 
-// Config dotenv
+// ambience variables
 dotenv.config();
 
 // init express
