@@ -1,15 +1,24 @@
+// modules
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+// hooks
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// pages
+import Register from './pages/Auth/Register';
+
+
+// app
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <h1>teste</h1>
-                <p>aaa</p>
-            </header>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/registro' element={ <Register /> } />
+                </Routes>
+            </BrowserRouter>
+            <h1>app</h1>
         </div>
     );
 }
