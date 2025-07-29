@@ -29,7 +29,7 @@ const Register = () => {
                     <h1>Go talk to me</h1>
                     <h3>The best llm ever</h3>
                     <button type='button'>
-                        Read More
+                        More About
                     </button>
                 </div>
             </div>
@@ -65,6 +65,8 @@ const Register = () => {
                     <button type='submit'>
                         Register
                     </button>
+
+                    <p className='ask'>Already logged ?</p>
                 </form>
             </div>
         </div>

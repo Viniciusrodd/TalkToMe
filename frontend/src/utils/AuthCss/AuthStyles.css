@@ -20,7 +20,7 @@ button{
 }
 button:hover{
     transform: scale(1.02);
-    background-color: rgb(229, 246, 246);
+    background-color: rgb(225, 231, 231);
 }
 
 input::placeholder{
@@ -97,6 +97,18 @@ input:focus{
         font-size: 22px;
         color: black;
     }
+
+    & p.ask{
+        font-weight: 400;
+        margin-top: 20px;
+        font-size: 18px;
+        transition: all ease-in-out 0.2s;
+        cursor: pointer;
+    }
+    & p.ask:hover{
+        transform: scale(1.02);
+        text-decoration: underline;
+    }
 }
 
 form{
@@ -133,7 +145,12 @@ form{
 
     & button{
         border-radius: 20px;
-        height: 60px;
+        height: 55px;
         width: 100%;
+        background-color: #736CAF;
+        color: azure;
+    }
+    button:hover{
+        background-color: #6c64b0;
     }
 }
