@@ -1,15 +1,139 @@
 @charset "UTF-8";
 
+/* general css */
+
+*{
+    color: azure;
+}
+
+button{
+    height: 50px;
+    width: 9vw;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 19px;
+    font-weight: 500;
+    color: purple;
+    cursor: pointer;
+    transition: ease-in-out all 0.2s;
+}
+button:hover{
+    transform: scale(1.02);
+    background-color: rgb(229, 246, 246);
+}
+
+input::placeholder{
+    color: grey;
+}
+
+input:focus{
+  outline: none;
+}
+
+/* page css */
+
 .register_container{
-    background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
     width: 100%;
 }
 
 .register_image_container{
+    background-image: url(../../../images/abstract_1.jpg);
+    background-position: right center;
+    background-size: cover;
+    height: 100%;
     width: 50%;
+
+    & .register_image_container_filter{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(19, 37, 38, 0.365);
+    }
+
+    & h1{
+        font-size: 50px;
+        font-weight: bolder;
+    }
+
+    & h3{
+        font-size: 25px;
+    }
 }
 
 .register_panel{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 50%;
+
+    & div{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 40%;
+    }
+
+    & h1{
+        font-size: 40px;
+        font-weight: bolder;
+        color: black;
+    }
+
+    & img{
+        height: 30px;
+        width: 30px;
+    }
+
+    & p{
+        font-size: 22px;
+        color: black;
+    }
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 20vw;
+    padding: 0px 20px 0px 20px;
+    margin-top: 20px;
+    
+    & .input_container{
+        border: 2px solid lightgrey;
+        border-radius: 20px;
+        padding: 0px 15px 0px 15px;
+        height: 50px;
+        width: 90%;
+        margin-bottom: 10px;
+
+        & span{
+            color: grey;
+        }
+
+        & input{
+            border: none;
+            background-color: transparent;
+            color: grey;
+            font-size: 18px;
+            height: 100%;
+            width: 90%;
+            margin-left: 5px;
+        }
+    }
+
+    & button{
+        border-radius: 20px;
+        height: 60px;
+        width: 100%;
+    }
 }
