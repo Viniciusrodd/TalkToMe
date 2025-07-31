@@ -12,8 +12,6 @@ import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 
-//// user types
-
 // user request
 interface UserRegistrationRequest{
     name: string; email: string; password: string;
@@ -21,7 +19,7 @@ interface UserRegistrationRequest{
 
 // user respose
 interface UserResponse{
-    id: string; name: string; email: string;
+    name: string;
 };
 
 interface ApiResponse<T = any>{
@@ -41,8 +39,8 @@ class UserController{
 
     // register user
     async registerUser(
-        req: Request< {}, {}, UserRegistrationRequest >, 
-        res: Response< ApiResponse <UserResponse> >
+        req: Request< {}, {}, UserRegistrationRequest >, // express.Request<Params, ResBody, ReqBody, Query>
+        res: Response< ApiResponse <UserResponse> > // complete response always follow "ApiResponse" interface, but "data" can be UserResponse types
     ){
         const { name, email, password } = req.body;
         if(!name || !email || !password){
@@ -71,7 +69,7 @@ class UserController{
             return res.status(201).send({
                 success: true,
                 message: 'User creation success',
-                data: { id: newUser.id, name: newUser.name, email: newUser.email }
+                data: { name: newUser.name }
             });
         }
         catch(error: unknown){
