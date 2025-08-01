@@ -12,7 +12,7 @@ import validations from '../middlewares/ControllerValidations/UserValidations';
 //// routes
 
 // user - backend port: 2140
-router.post('/register', validate, validations.user_register_validation, UserController.registerUser);
+router.post('/register', validations.user_register_validation(), validate, UserController.registerUser);
 
 
 
