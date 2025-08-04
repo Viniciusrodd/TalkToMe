@@ -6,31 +6,6 @@
     color: azure;
 }
 
-button{
-    height: 50px;
-    width: 9vw;
-    margin-top: 10px;
-    border: none;
-    border-radius: 10px;
-    font-size: 19px;
-    font-weight: 500;
-    color: purple;
-    cursor: pointer;
-    transition: ease-in-out all 0.2s;
-}
-button:hover{
-    transform: scale(1.02);
-    background-color: rgb(225, 231, 231);
-}
-
-input::placeholder{
-    color: grey;
-}
-
-input:focus{
-  outline: none;
-}
-
 /* page css */
 
 .register_container{
@@ -66,6 +41,24 @@ input:focus{
     & h3{
         font-size: 25px;
     }
+
+    & button{
+        height: 50px;
+        width: 9vw;
+        margin-top: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 19px;
+        font-weight: 500;
+        color: purple;
+        cursor: pointer;
+        transition: ease-in-out all 0.2s;
+    }
+    & button:hover{
+        transform: scale(1.02);
+        background-color: rgb(225, 231, 231);
+    }
+
 }
 
 .register_panel{
@@ -141,14 +134,27 @@ form{
             width: 90%;
             margin-left: 5px;
         }
+
+        input::placeholder{
+            color: grey;
+        }
+
+        input:focus{
+        outline: none;
+        }
     }
 
     & button{
-        border-radius: 20px;
         height: 55px;
         width: 100%;
+        margin-top: 10px;
+        border: none;
+        border-radius: 20px;
+        font-size: 19px;
+        font-weight: 500;        
         background-color: #736CAF;
         color: azure;
+        cursor: pointer;
     }
     button:hover{
         background-color: #6c64b0;
