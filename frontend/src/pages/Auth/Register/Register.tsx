@@ -18,9 +18,6 @@ const Register = () => {
         password: string
     };
 
-    // types
-    //type ConfirmPass = string | number | readonly string[] | undefined;
-
     // states
     const [ formData, setFormData ] = useState<IFormData>({name: '', email: '', password: ''});
     const [ confirmPassword, setConfirmPassword ] = useState<string>('');

@@ -23,7 +23,10 @@ interface UserResponse{
 };
 
 interface ApiResponse<T = any>{
-    success: boolean; message: string; data?: T; errorMessage?: string;
+    success: boolean; 
+    message: string; 
+    data?: T; 
+    errorMessage?: string;
 };
 
 
