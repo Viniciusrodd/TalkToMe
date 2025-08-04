@@ -6,8 +6,16 @@ import type { Config } from 'jest';
 const config: Config = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    testMatch: ['**/__tests__/**/*.test.ts'],
+    testMatch: ['**/src/tests/**/*.test.ts'],
     moduleFileExtensions: ['ts', 'js', 'json'],
+    transform: {
+        '^.+\\.tsx?$': 'ts-jest', // garante que arquivos .ts/.tsx sejam transformados
+    },
+    globals: {
+        'ts-jest': {
+            isolatedModules: true,
+        },
+    },
 };
 
 // exports
