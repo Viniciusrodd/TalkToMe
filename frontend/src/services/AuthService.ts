@@ -29,8 +29,11 @@ export const user_register = async (userData: IUserRegister): Promise<AxiosRespo
     }
     catch(error){
         if(axios.isAxiosError(error)){
-            console.error('user registration failed: ', error.response?.data);
-            throw error;
+            const errorMessage = error.response?.data?.errors?.[0] || error.response?.data?.message || error.message;
+            console.error('user registration failed: ', error.response?.data?.errors?.[0] || error.response?.data?.message); 
+            
+            // repass the error for component
+            throw new Error(errorMessage);
         }
         throw new Error('unknown user registration fail');
     }

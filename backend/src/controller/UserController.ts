@@ -57,6 +57,17 @@ class UserController{
             // bcrypt - hash
             let hash = bcrypt.hashSync(password, 10);
 
+            // email exist verify
+            const email_exist = await models.User.findOne({
+                where: { email }
+            });
+            if(email_exist){
+                return res.status(409).send({ 
+                    success: false,
+                    message: 'User Email already exist' 
+                });
+            };
+
             // profile save
             const newUser = await models.User.create({ name, email, password: hash });
             if(!newUser){

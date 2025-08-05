@@ -116,12 +116,14 @@ const Register = () => {
             }
         }
         catch(error){
-            console.log(error);
+            console.log('full error: ', error);
 
-            modal_config({
-                title: 'Error', msg: 'error at registering user. Please, try again later', btt1: false, 
-                btt2: 'try again', display: true
-            });
+            if(error instanceof Error){
+                modal_config({
+                    title: 'Error', msg: error.message, btt1: false, 
+                    btt2: 'try again', display: true
+                });
+            }
         }
     };
 
