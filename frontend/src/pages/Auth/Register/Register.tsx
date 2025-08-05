@@ -3,7 +3,7 @@
 import '../../../utils/AuthCss/AuthStyles.css';
 
 // hooks
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // services
 import { user_register } from '../../../services/AuthService';
@@ -24,36 +24,34 @@ const Register = () => {
     interface IModalConfig {
         title: string;
         msg: string;
-        btt1: boolean;
-        btt2: boolean;
+        btt1: boolean | string;
+        btt2: boolean | string;
         display: boolean;
-        title_color?: string; // Opcional com valor padrão
     }
 
     // states
     const [ formData, setFormData ] = useState<IFormData>({name: '', email: '', password: ''});
     const [ confirmPassword, setConfirmPassword ] = useState<string>('');
+    const [ redirectLogin, setRedirectLogin ] = useState<boolean>(false);
 
     // modal
     const [ modal_display, setModal_display ] = useState<boolean>(false);
     const [ modal_title, setModal_title ] = useState<string>('');
     const [ modal_msg, setModal_msg ] = useState<string>('');
-    const [ modal_btt, setmodal_btt ] = useState<boolean>(false);
-    const [ modal_btt_2, setModal_btt_2 ] = useState<boolean>(false);
-    const [ title_color, setTitle_color ] = useState<string>('#000');
+    const [ modal_btt, setmodal_btt ] = useState<boolean | string>(false);
+    const [ modal_btt_2, setModal_btt_2 ] = useState<boolean | string>(false);
 
 
     // functions
 
 
     // modal config
-    const modal_config = ({ title, msg, btt1, btt2, display, title_color }: IModalConfig) => {
+    const modal_config = ({ title, msg, btt1, btt2, display }: IModalConfig) => {
         setModal_title(title ?? '');
         setModal_msg(msg ?? '');
         setmodal_btt(btt1 ?? false);
         setModal_btt_2(btt2 ?? false);
         setModal_display(display ?? false);
-        setTitle_color(title_color ?? '#000');
 
         // The "??" (nullish coalescing operator) 
         // returns the value on the right ONLY if the value on the left is null or undefined
@@ -64,17 +62,38 @@ const Register = () => {
         if(modal_btt_2 !== false){
             modal_config({
                 title: '', msg: '', btt1: false, 
-                btt2: false, display: false, title_color: '#000'
+                btt2: false, display: false
             });
         }
     };
+
+    // redirect login
+    useEffect(() =>{
+        if(redirectLogin){
+            const timeout = setTimeout(() => {
+                modal_config({
+                    title: '', msg: '', btt1: false, 
+                    btt2: false, display: false
+                });  
+
+                // navigate here to login later...
+            }, 3000);
+
+            return () =>{
+                clearTimeout(timeout);
+            };
+        }
+    }, [redirectLogin]);
 
     // form
     const handle_form = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
         
         if(formData.password !== confirmPassword){
-            console.log('confirm password must be equal password...');
+            modal_config({
+                title: 'Error', msg: 'passwords must be equals', btt1: false, 
+                btt2: 'try again', display: true
+            });
             return;
         }
 
@@ -82,13 +101,28 @@ const Register = () => {
             const res = await user_register(formData);
             if(res.status === 201){
                 console.log('User registration successfully');
+
+                // clean states
+                setFormData({ name: '', email: '', password: '' });
+                setConfirmPassword('');
+
+                // modal advice
+                modal_config({
+                    title: 'Success', msg: 'You will be redirect to Login', btt1: false, 
+                    btt2: false, display: true
+                });
+
+                setRedirectLogin(true);
             }
         }
         catch(error){
             console.log(error);
-        }
 
-        console.log(formData);
+            modal_config({
+                title: 'Error', msg: 'error at registering user. Please, try again later', btt1: false, 
+                btt2: 'try again', display: true
+            });
+        }
     };
 
 
@@ -97,6 +131,17 @@ const Register = () => {
 
     return (
         <div className='register_container'>
+            { /* modal */ }
+            <Modal 
+                title={ modal_title }
+                msg={ modal_msg }
+                btt1={ modal_btt }
+                btt2={ modal_btt_2 }
+                display={ modal_display }
+                onClose={ closeModal }
+            />
+
+            { /* aplication */ }
             <div className='register_image_container'>
                 <div className='register_image_container_filter'>
                     <h1>Go talk to me</h1>
@@ -146,16 +191,6 @@ const Register = () => {
                     <p className='ask'>Already logged ?</p>
                 </form>
             </div>
-
-            <Modal 
-                title={ modal_title }
-                msg={ modal_msg }
-                btt1={ modal_btt }
-                btt2={ modal_btt_2 }
-                display={ modal_display }
-                title_color={ title_color } 
-                onClose={ closeModal }
-            />
         </div>
     );
 };

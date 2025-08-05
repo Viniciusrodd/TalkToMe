@@ -7,22 +7,23 @@ import styleModal from './Modal.module.css';
 interface IModal{
     title: string; 
     msg: string; 
-    btt1: boolean; 
-    btt2: boolean; 
+    btt1: boolean | string; 
+    btt2: boolean | string; 
     display: boolean; 
-    title_color: string; 
     onClose: () => void; 
     modalEvent?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 
 // modal
-const Modal: React.FC<IModal> = ({ title, msg, btt1, btt2, display, title_color, onClose, modalEvent }) => {
+const Modal: React.FC<IModal> = ({ title, msg, btt1, btt2, display, onClose, modalEvent }) => {
     return(
         <div className={ display ? styleModal.modal : styleModal.hidden }>
             <div className={ styleModal.modal_content }>
-                <span className={ `${styleModal.close_button} ${styleModal.span_btt}` }>&times;</span>
-                <h2 className={`${styleModal.h2_modal} ${styleModal[title_color]}`}>
+                <span onClick={ onClose } className={ `${styleModal.close_button} ${styleModal.span_btt}` }>
+                    &times;
+                </span>
+                <h2 className={styleModal.h2_modal }>
                     { title }
                 </h2>
                 <p className={ styleModal.p_modal }>
