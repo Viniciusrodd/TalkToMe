@@ -8,7 +8,7 @@
 
 /* page css */
 
-.register_container{
+.auth_container{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,14 +16,18 @@
     width: 100%;
 }
 
-.register_image_container{
-    background-image: url(../../../images/abstract_1.jpg);
+.test{
+    background-image: url(../../../images/login_panel.jpg) !important;
+}
+
+.auth_image_container{
+    background-image: url(../../../images/register_panel.jpg);
     background-position: right center;
     background-size: cover;
     height: 100%;
     width: 50%;
 
-    & .register_image_container_filter{
+    & .auth_image_container_filter{
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -43,8 +47,8 @@
     }
 
     & button{
-        height: 50px;
-        width: 9vw;
+        height: 55px;
+        width: 13vw;
         margin-top: 10px;
         border: none;
         border-radius: 10px;
@@ -61,7 +65,7 @@
 
 }
 
-.register_panel{
+.auth_panel{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,7 +76,7 @@
         display: flex;
         align-items: center;
         justify-content: space-around;
-        width: 40%;
+        padding: 0px 10px;
     }
 
     & h1{
@@ -84,6 +88,7 @@
     & img{
         height: 30px;
         width: 30px;
+        margin-left: 15px;
     }
 
     & p{

@@ -132,7 +132,7 @@ const Register = () => {
 
 
     return (
-        <div className='register_container'>
+        <div className='auth_container'>
             { /* modal */ }
             <Modal 
                 title={ modal_title }
@@ -144,17 +144,17 @@ const Register = () => {
             />
 
             { /* aplication */ }
-            <div className='register_image_container'>
-                <div className='register_image_container_filter'>
+            <div className='auth_image_container'>
+                <div className='auth_image_container_filter'>
                     <h1>Go talk to me</h1>
                     <h3>The best llm ever</h3>
                     <button type='button'>
-                        More About
+                        Already logged ?
                     </button>
                 </div>
             </div>
 
-            <div className='register_panel'>
+            <div className='auth_panel'>
                 <div>
                     <h1>Hello, friend</h1>
                     <img src='../../../images/hello.png' alt="Hello ilustration" />
@@ -190,7 +190,9 @@ const Register = () => {
                         Register
                     </button>
 
+                    {/*
                     <p className='ask'>Already logged ?</p>
+                    */}
                 </form>
             </div>
         </div>
