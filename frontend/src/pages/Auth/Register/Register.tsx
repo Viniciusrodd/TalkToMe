@@ -4,6 +4,7 @@ import '../../../utils/AuthCss/AuthStyles.css';
 
 // hooks
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // services
 import { user_register } from '../../../services/AuthService';
@@ -15,19 +16,19 @@ import Modal from '../../../components/Modal/Modal';
 // register
 const Register = () => {
     // interface
-    interface IFormData{
-        name: string,
-        email: string,
-        password: string
-    };
-
     interface IModalConfig {
         title: string;
         msg: string;
         btt1: boolean | string;
         btt2: boolean | string;
         display: boolean;
-    }
+    };
+    interface IFormData{
+        name: string,
+        email: string,
+        password: string
+    };
+
 
     // states
     const [ formData, setFormData ] = useState<IFormData>({name: '', email: '', password: ''});
@@ -40,6 +41,9 @@ const Register = () => {
     const [ modal_msg, setModal_msg ] = useState<string>('');
     const [ modal_btt, setmodal_btt ] = useState<boolean | string>(false);
     const [ modal_btt_2, setModal_btt_2 ] = useState<boolean | string>(false);
+
+    // consts
+    const navigate = useNavigate();
 
 
     // functions
@@ -127,6 +131,11 @@ const Register = () => {
         }
     };
 
+    // login page
+    const login_page = () =>{
+        navigate('/login');
+    };
+
 
     // jsx
 
@@ -148,7 +157,7 @@ const Register = () => {
                 <div className='auth_image_container_filter'>
                     <h1>Go talk to me</h1>
                     <h3>The best llm ever</h3>
-                    <button type='button'>
+                    <button type='button' onClick={ login_page }>
                         Already logged ?
                     </button>
                 </div>

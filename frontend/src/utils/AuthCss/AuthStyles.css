@@ -16,10 +16,6 @@
     width: 100%;
 }
 
-.test{
-    background-image: url(../../../images/login_panel.jpg) !important;
-}
-
 .auth_image_container{
     background-image: url(../../../images/register_panel.jpg);
     background-position: right center;
@@ -44,6 +40,7 @@
 
     & h3{
         font-size: 25px;
+        margin-bottom: 10px;
     }
 
     & button{
@@ -164,4 +161,12 @@ form{
     button:hover{
         background-color: #6c64b0;
     }
+}
+
+
+/* login */
+
+
+.login_image_container{
+    background-image: url(../../../images/login_panel.jpg) !important;
 }
