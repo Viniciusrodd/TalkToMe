@@ -31,7 +31,7 @@ const Register = () => {
 
 
     // states
-    const [ formData, setFormData ] = useState<IFormData>({name: '', email: '', password: ''});
+    const [ formData, setFormData ] = useState<IFormData>({ name: '', email: '', password: '' });
     const [ confirmPassword, setConfirmPassword ] = useState<string>('');
     const [ redirectLogin, setRedirectLogin ] = useState<boolean>(false);
 
@@ -95,7 +95,7 @@ const Register = () => {
         
         if(formData.password !== confirmPassword){
             modal_config({
-                title: 'Error', msg: 'passwords must be equals', btt1: false, 
+                title: 'Error ❗', msg: 'passwords must be equals', btt1: false, 
                 btt2: 'try again', display: true
             });
             return;
@@ -112,7 +112,7 @@ const Register = () => {
 
                 // modal advice
                 modal_config({
-                    title: 'Success', msg: 'You will be redirect to Login', btt1: false, 
+                    title: 'Success ✅', msg: 'You will be redirect to Login', btt1: false, 
                     btt2: false, display: true
                 });
 
@@ -124,7 +124,7 @@ const Register = () => {
 
             if(error instanceof Error){
                 modal_config({
-                    title: 'Error', msg: error.message, btt1: false, 
+                    title: 'Error ❗', msg: error.message, btt1: false, 
                     btt2: 'try again', display: true
                 });
             }

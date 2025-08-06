@@ -27,7 +27,7 @@ const Modal: React.FC<IModal> = ({ title, msg, btt1, btt2, display, onClose, mod
                     { title }
                 </h2>
                 <p className={ styleModal.p_modal }>
-                    { msg }
+                    { msg }                
                 </p>
                 {
                     btt1 && (

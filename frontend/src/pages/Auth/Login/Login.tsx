@@ -9,6 +9,9 @@ import Modal from '../../../components/Modal/Modal';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// service
+import { user_login } from '../../../services/AuthService';
+
 
 // login
 const Login = () => {
@@ -22,14 +25,13 @@ const Login = () => {
     };
 
     interface IFormData{
-        name: string,
         email: string,
         password: string
     };
 
 
     // states
-    const [ formData, setFormData ] = useState<IFormData>({name: '', email: '', password: ''});
+    const [ formData, setFormData ] = useState<IFormData>({ email: '', password: '' });
     const [ confirmPassword, setConfirmPassword ] = useState<string>('');
     const [ redirectHomepage, setRedirectHomepage ] = useState<boolean>(false);
 
@@ -93,21 +95,36 @@ const Login = () => {
 
         if(formData.password !== confirmPassword){
             modal_config({
-                title: 'Error', msg: 'passwords must be equals', btt1: false, 
+                title: 'Error ❗', msg: 'passwords must be equals', btt1: false, 
                 btt2: 'try again', display: true
             });
             return;
         }
 
         try{
-            // service use
+            const res = await user_login(formData);
+            if(res.status === 200){
+                console.log('User login successfully');
+
+                // clean states
+                setFormData({ email: '', password: '' });
+                setConfirmPassword('');
+
+                // modal advice
+                modal_config({
+                    title: 'Success ✅', msg: `Hello <${res.data.data?.name}> 👋, \nYou will be redirect to Homepage`, 
+                    btt1: false, btt2: false, display: true
+                });
+
+                setRedirectHomepage(true);
+            }
         }
         catch(error){
             console.log('Full error: ', error);
 
             if(error instanceof Error){
                 modal_config({
-                    title: 'Error', msg: error.message, btt1: false, 
+                    title: 'Error ❗', msg: error.message, btt1: false, 
                     btt2: 'try again', display: true
                 });
             }
@@ -152,12 +169,6 @@ const Login = () => {
                 </div>
 
                 <form autoComplete='off' onSubmit={ handle_form }>
-                    <div className='input_container'>
-                        <span className="material-symbols-outlined">person</span>
-                        <input type="text" name="name" placeholder='Full name' value={ formData.name } 
-                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setFormData({...formData, name: e.target.value}) } />
-                    </div>
-
                     <div className='input_container'>
                         <span className="material-symbols-outlined">mail</span>
                         <input type="email" name="email" placeholder='Email' value={ formData.email }

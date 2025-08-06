@@ -9,6 +9,12 @@ interface IUserRegister{
     password: string
 };
 
+// user login interface
+interface IUserLogin{
+    email: string,
+    password: string
+};
+
 // api response interface
 interface ApiResponse{
     success: boolean; 
@@ -22,7 +28,7 @@ interface ApiResponse{
 
 
 // user - register
-export const user_register = async (userData: IUserRegister): Promise<AxiosResponse<ApiResponse>> =>{
+export const user_register = async (userData: IUserRegister): Promise< AxiosResponse<ApiResponse> > =>{
     try{
         const response = await axios.post('http://localhost:2140/register', userData);
         return response;
@@ -36,5 +42,25 @@ export const user_register = async (userData: IUserRegister): Promise<AxiosRespo
             throw new Error(errorMessage);
         }
         throw new Error('unknown user registration fail');
+    }
+};
+
+
+// user login
+export const user_login = async (userData: IUserLogin): Promise< AxiosResponse<ApiResponse> > =>{
+    try{
+        const response = await axios.post('http://localhost:2140/login', userData);
+        return response;
+    }
+    catch(error){
+        if(axios.isAxiosError(error)){
+            const errorMessage = error.response?.data?.errors?.[0] || error.response?.data?.message || error.message;
+            console.error('user login failed: ', error.response?.data?.errors?.[0] || error.response?.data?.message); 
+            
+            // repass the error for component
+            throw new Error(errorMessage);
+        }
+
+        throw new Error('unknown user login fail');      
     }
 };
