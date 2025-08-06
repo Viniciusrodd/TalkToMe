@@ -6,7 +6,7 @@ import '../../../utils/AuthCss/AuthStyles.css';
 import Modal from '../../../components/Modal/Modal';
 
 // hooks
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -31,6 +31,7 @@ const Login = () => {
     // states
     const [ formData, setFormData ] = useState<IFormData>({name: '', email: '', password: ''});
     const [ confirmPassword, setConfirmPassword ] = useState<string>('');
+    const [ redirectHomepage, setRedirectHomepage ] = useState<boolean>(false);
 
     // modal
     const [ modal_display, setModal_display ] = useState<boolean>(false);
@@ -65,6 +66,51 @@ const Login = () => {
                 title: '', msg: '', btt1: false, 
                 btt2: false, display: false
             });
+        }
+    };
+
+    // redirect login
+    useEffect(() =>{
+        if(redirectHomepage){
+            const timeout = setTimeout(() => {
+                modal_config({
+                    title: '', msg: '', btt1: false, 
+                    btt2: false, display: false
+                });  
+
+                navigate('/homepage');
+            }, 3000);
+
+            return () =>{
+                clearTimeout(timeout);
+            };
+        }
+    }, [redirectHomepage]);
+
+    // form
+    const handle_form = async (e: React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+
+        if(formData.password !== confirmPassword){
+            modal_config({
+                title: 'Error', msg: 'passwords must be equals', btt1: false, 
+                btt2: 'try again', display: true
+            });
+            return;
+        }
+
+        try{
+            // service use
+        }
+        catch(error){
+            console.log('Full error: ', error);
+
+            if(error instanceof Error){
+                modal_config({
+                    title: 'Error', msg: error.message, btt1: false, 
+                    btt2: 'try again', display: true
+                });
+            }
         }
     };
 
@@ -105,7 +151,7 @@ const Login = () => {
                     <img src='../../../images/login.png' alt="Hello ilustration" />
                 </div>
 
-                <form autoComplete='off'>
+                <form autoComplete='off' onSubmit={ handle_form }>
                     <div className='input_container'>
                         <span className="material-symbols-outlined">person</span>
                         <input type="text" name="name" placeholder='Full name' value={ formData.name } 

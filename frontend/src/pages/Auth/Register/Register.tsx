@@ -80,7 +80,7 @@ const Register = () => {
                     btt2: false, display: false
                 });  
 
-                // navigate here to login later...
+                navigate('/login');
             }, 3000);
 
             return () =>{
