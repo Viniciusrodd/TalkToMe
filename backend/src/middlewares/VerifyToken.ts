@@ -10,7 +10,7 @@ import { Request, Response, NextFunction } from 'express';
 dotenv.config();
 const secretToken = process.env.SECRET_TOKEN;
 if (!secretToken){ // force verification
-  throw new Error('SECRET_TOKEN not defined in .env');
+    throw new Error('SECRET_TOKEN not defined in .env');
 }
 
 // middleware
