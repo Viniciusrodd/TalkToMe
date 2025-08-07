@@ -129,13 +129,11 @@ form{
             width: 90%;
             margin-left: 5px;
         }
-
         input::placeholder{
             color: grey;
         }
-
         input:focus{
-        outline: none;
+            outline: none;
         }
     }
 
