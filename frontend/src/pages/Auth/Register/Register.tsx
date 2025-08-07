@@ -141,7 +141,7 @@ const Register = () => {
 
 
     return (
-        <div className='auth_container'>
+        <div className='general_container'>
             { /* modal */ }
             <Modal 
                 title={ modal_title }

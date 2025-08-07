@@ -59,7 +59,7 @@
     color: black;
     font-weight: 450;
     font-size: 20px;
-    white-space: pre-line;
+    white-space: pre-line; /* for understand "\n" */
 }
 
 /* Botão de Ação */
