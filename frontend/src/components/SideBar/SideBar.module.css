@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+
+.sidebar_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    width: 5vw;
+    background-color: transparent;
+
+    & ul{
+        margin-top: 0px;
+        padding: 0px;
+        list-style-type: none;
+
+        & li{
+            padding: 10px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            transition: all ease-in-out 0.2s;
+        }
+        & li:hover{
+            background-color: rgba(255, 255, 255, 0.386);
+            transform: scale(1.06);
+        }
+    }
+
+    span{
+        font-size: 26px;
+        color: #199BE2;
+        text-shadow: -1px 2px 0px rgba(255, 255, 255, 0.6);
+    }
+}

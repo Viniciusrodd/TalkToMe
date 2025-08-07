@@ -5,9 +5,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    height: 10vh;
+    height: 12vh;
     width: 100%;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.036), transparent );
+    background-color: transparent;
 
     & h1{
         font-size: 30px;
@@ -20,7 +20,7 @@
         justify-content: space-between;
         align-items: center;
         height: 100%;
-        margin-left: 5%;
+        margin-left: 20px;
 
         & img{
             height: 40px;
