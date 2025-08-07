@@ -12,8 +12,9 @@ html, body{
 
 .general_container{
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     width: 100%;
     background-image: linear-gradient(to bottom, rgb(190, 217, 255), white, white, rgb(223, 198, 255));

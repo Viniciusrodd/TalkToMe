@@ -140,7 +140,7 @@ const Login = () => {
 
     // jsx
     return (
-        <div className='general_container'>
+        <div className='auth_container'>
             { /* modal */ }
             <Modal 
                 title={ modal_title }
