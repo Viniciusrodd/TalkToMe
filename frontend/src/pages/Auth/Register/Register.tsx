@@ -166,7 +166,7 @@ const Register = () => {
             <div className='auth_panel'>
                 <div>
                     <h1>Hello, friend</h1>
-                    <img src='../../../images/hello.png' alt="Hello ilustration" />
+                    <img src='../../../images/util_images/hello.png' alt="Hello ilustration" />
                 </div>
                 <p>Welcome to TalkToMe</p>
 

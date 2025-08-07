@@ -7,7 +7,10 @@ import styles from './NavBar.module.css';
 const NavBar = () => {
     return (
         <div className={ styles.navbar_container }>
-            <h1>NavBar</h1>          
+            <div>
+                <img src='../../../images/util_images/robot.png' alt="Hello ilustration" />
+                <h1>Hey, talk to me ?</h1>
+            </div>
         </div>
     );
 };

@@ -165,7 +165,7 @@ const Login = () => {
             <div className='auth_panel'>
                 <div>
                     <h1>Log in</h1>
-                    <img src='../../../images/login.png' alt="Hello ilustration" />
+                    <img src='../../../images/util_images/login.png' alt="Hello ilustration" />
                 </div>
 
                 <form autoComplete='off' onSubmit={ handle_form }>
