@@ -6,10 +6,10 @@
     align-items: flex-start;
     height: 100%;
     width: 100%;
+    background-image: linear-gradient(to bottom, rgb(165, 201, 255), white, white, white);
 }
 
 .homepage{
-    border-top: 1px solid;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -56,7 +56,7 @@
     }
     & .utils:hover{
         transform: scale(1.03);
-        background-color: rgba(176, 224, 250, 0.263);
+        background-color: rgba(100, 199, 251, 0.263);
     }
 
     & input{

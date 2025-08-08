@@ -80,7 +80,7 @@ const Login = () => {
                     btt2: false, display: false
                 });  
 
-                navigate('/homepage');
+                navigate('/talkToMe');
             }, 3000);
 
             return () =>{
