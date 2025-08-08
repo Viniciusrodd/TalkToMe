@@ -132,9 +132,6 @@ form{
         input::placeholder{
             color: grey;
         }
-        input:focus{
-            outline: none;
-        }
     }
 
     & button{

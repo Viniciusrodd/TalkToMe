@@ -7,7 +7,7 @@
     justify-content: flex-start;
     height: 12vh;
     width: 100%;
-    background-image: linear-gradient(to right, #C8DEFF, #AACCFF, #AACCFF, #AACCFF, #AACCFF, #AACCFF, #AACCFF);
+    background-image: linear-gradient(to top, #74a8f6, aliceblue);
 
     & h1{
         font-size: 30px;

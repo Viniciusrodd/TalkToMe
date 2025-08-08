@@ -10,10 +10,21 @@ import { useState } from 'react';
 const SideBar = () => {
     // states
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
+    const [ isSearching, setIsSearching ] = useState<boolean>(false);
 
 
     // functions
+    
+
+    // side open
     const side_open = () =>{
+        setIsOpen(!isOpen);
+        setIsSearching(!isSearching);
+    };
+
+    // search chat
+    const search_chat = () =>{
+        setIsSearching(!isSearching);
         setIsOpen(!isOpen);
     };
 
@@ -30,10 +41,22 @@ const SideBar = () => {
                         <li onClick={ side_open }>
                             <span className="material-symbols-outlined">dock_to_left</span>
                         </li>
-                        <li>
-                            <span className="material-symbols-outlined">search</span>
-                            Search chats
-                        </li>
+                        {
+                            isSearching ? (
+                                <li>
+                                    <span className="material-symbols-outlined">search</span>
+                                    <input type="text" name="" placeholder='Search for chats...' />
+                                    <button type='submit'>
+                                        Submit
+                                    </button>
+                                </li>
+                            ) : (
+                                <li onClick={ search_chat }>
+                                    <span className="material-symbols-outlined">search</span>
+                                    Search chats
+                                </li>
+                            )
+                        }
                         <li>
                             <span className="material-symbols-outlined">chat_add_on</span>
                             New chat
@@ -41,21 +64,52 @@ const SideBar = () => {
                     </ul>
 
                     <hr />
-                    <p>Chats</p>
+                    <div className={ styles.scrollbar_div }>
+                        <p className={ styles.chat_p }>Chats</p>
 
-                    <p>jfndsajknfdk</p>
-                    <p>jfndsajknfdk</p>
-                    <p>jfndsajknfdk</p>
-                    <p>jfndsajknfdk</p>
+                        <p>chat conversation 1</p>
+                        <p>chat conversation 2</p>
+                        <p>chat conversation 3</p>
+                        <p>chat conversation 4</p>
+                        <p>chat conversation 1</p>
+                        <p>chat conversation 2</p>
+                        <p>chat conversation 3</p>
+                        <p>chat conversation 4</p>
+                        <p>chat conversation 1</p>
+                        <p>chat conversation 2</p>
+                        <p>chat conversation 3</p>
+                        <p>chat conversation 4</p>
+                        <p>chat conversation 1</p>
+                        <p>chat conversation 2</p>
+                        <p>chat conversation 3</p>
+                        <p>chat conversation 4</p>                    
+                        <p>chat conversation 1</p>
+                        <p>chat conversation 2</p>
+                        <p>chat conversation 3</p>
+                        <p>chat conversation 4</p>
+                        <p>chat conversation 1</p>
+                        <p>chat conversation 2</p>
+                        <p>chat conversation 3</p>
+                        <p>chat conversation 4</p>
+                    </div>
                     </>
                 ) : (
                     <ul>
                         <li onClick={ side_open }>
                             <span className="material-symbols-outlined">dock_to_right</span>
                         </li>
-                        <li>
-                            <span className="material-symbols-outlined">search</span>
-                        </li>
+                        {
+                            isSearching ? (
+                                <li>
+                                    <span className="material-symbols-outlined">search</span>
+                                    <input type="text" name="" placeholder='Search...' />
+                                </li>
+                            ) : (
+                                <li onClick={ search_chat }>
+                                    <span className="material-symbols-outlined">search</span>
+                                </li>
+                            )
+                        }
                         <li>
                             <span className="material-symbols-outlined">person</span>
                         </li>
