@@ -29,8 +29,9 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void | Re
             return res.status(403).json({ invalidToken: 'Invalid token' });
         }
 
-        // add user data at request
+        /* add user data at request
         req.user = data;
+        */
         next();
     });
 };

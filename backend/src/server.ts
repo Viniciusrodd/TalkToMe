@@ -3,6 +3,7 @@ import app from './app';
 import connection from './database/connection/connection';
 import './database/relations';
 
+
 // database connection
 connection.authenticate()
     .then(() =>{

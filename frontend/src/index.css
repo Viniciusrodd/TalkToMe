@@ -24,3 +24,7 @@ html, body{
 input:focus{
     outline: none;
 }
+
+input::placeholder{
+    color: azure;
+}

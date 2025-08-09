@@ -6,7 +6,7 @@
     align-items: flex-start;
     height: 100%;
     width: 100%;
-    background-image: linear-gradient(to bottom, rgb(116, 168, 246), azure, aliceblue, aliceblue, aliceblue, aliceblue);
+    background-image: linear-gradient(to bottom, #74a8f6, #3663a7, #284b7e, #1a3153, #1a3153, #1a3153);
     transition: all ease-in-out 0.5s;
 }
 
@@ -21,7 +21,6 @@
 
     & h1{
         font-size: 40px;
-        color: #199BE2;
         font-weight: 400;
         margin-top: 10%;
         transition: all ease-in-out 0.5s;
@@ -43,14 +42,13 @@
         height: 45%;
         width: 50px;
         border-radius: 100%;
-        background-color: #7fbcdd43;
+        background-color: #a6d5efac;
         cursor: pointer;
         transition: all ease-in-out 0.1s;
     
         & span{
             font-weight: 500;
             font-size: 28px;
-            color: #199BE2;
         }
 
         & .is_send{
@@ -60,7 +58,7 @@
     }
     & .utils:hover{
         transform: scale(1.03);
-        background-color: rgba(100, 199, 251, 0.263);
+        background-color: rgba(82, 164, 209, 0.461)
     }
 
     & input{
@@ -71,13 +69,11 @@
         border: none;
         font-size: 18px;
         font-weight: 500;
-        color: #199BE2;
-        background-color: #7fbcdd43;
+        background-color: #a6d5efac;
         transition: all ease-in-out 0.2s;
     }
     & input::placeholder{
         font-size: 18px;
-        color: #199BE2;
         font-weight: 500;
     }
     & input:focus{

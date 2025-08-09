@@ -13,8 +13,7 @@ import verifyToken from '../middlewares/VerifyToken';
 // verify token middleware
 router.get('/verifyToken', verifyToken, (req: Request, res: Response) =>{
     return res.status(200).send({ 
-        message: 'token is valid', 
-        user: req.user 
+        message: 'token is valid'
     });
 });
 

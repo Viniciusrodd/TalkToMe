@@ -50,12 +50,13 @@
     justify-content: flex-start;
     height: 85vh;
     transition: all ease-in-out 0.5s;
+    border-right: 0.5px solid;
 
     & hr{
         border: none;
         height: 5px;
         width: 60%;
-        background-color: grey;
+        background-color: lightgrey;
         margin: 30px 10px;
         transition: all ease-in-out 0.5s;
     }
@@ -63,14 +64,13 @@
     & p{
         font-size: 16px;
         font-weight: 400;
-        color: grey;
+        color: lightgrey;
         margin-top: 15px;
         cursor: pointer;
         transition: all ease-in-out 0.2s;
     }
     & p:hover{
-        color: black;
-        background-color: #199ce226;
+        background-color: #349ed626;
         padding: 5px;
         border-radius: 10px;
         transform: scale(1.05);
@@ -112,16 +112,15 @@
             border-radius: 10px;
             font-size: 17px;
             font-weight: 500;
-            color: #199BE2;
-            text-shadow: -1px 2px 0px rgba(255, 255, 255, 0.6);
-            transition: all ease-in-out 0.5s;
+            text-shadow: -1px 2px 0px #1876a9ba;
+            transition: all ease-in-out 0.2s;
 
             & input{
                 border: none;
                 background-color: transparent;
-                border-bottom: 2px solid #199BE2;
+                border-bottom: 2px solid azure;
                 font-weight: 500;
-                color: black;
+                color: azure;
                 transition: all ease-in-out 0.5s;
             }
 
@@ -140,7 +139,7 @@
             }
         }
         & li:hover{
-            background-color: #199ce226;
+            background-color: #7cbee164;
             transform: scale(1.02);
         }
     }

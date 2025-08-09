@@ -49,7 +49,7 @@ export const user_register = async (userData: IUserRegister): Promise< AxiosResp
 // user login
 export const user_login = async (userData: IUserLogin): Promise< AxiosResponse<ApiResponse> > =>{
     try{
-        const response = await axios.post('http://localhost:2140/login', userData);
+        const response = await axios.post('http://localhost:2140/login', userData, { withCredentials: true });        
         return response;
     }
     catch(error){
