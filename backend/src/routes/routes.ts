@@ -1,6 +1,6 @@
-// modules
-import express from 'express';
-const router = express.Router();
+// express
+import { Request, Response, Router } from 'express';
+const router = Router();
 
 // controllers
 import UserController from '../controller/UserController';
@@ -10,7 +10,17 @@ import validate from '../middlewares/HandleValidation';
 import validations from '../middlewares/ControllerValidations/UserValidations';
 import verifyToken from '../middlewares/VerifyToken';
 
+// verify token middleware
+router.get('/verifyToken', verifyToken, (req: Request, res: Response) =>{
+    return res.status(200).send({ 
+        message: 'token is valid', 
+        user: req.user 
+    });
+});
+
+
 //// routes
+
 
 // user - backend port: 2140
 router.post('/register', validations.user_register_validation(), validate, UserController.registerUser);

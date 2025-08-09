@@ -12,6 +12,7 @@
     justify-content: flex-start;
     width: 100%;
     padding: 5px 0px 5px 0px;
+    transition: all ease-in-out 0.5s;
 }
 
 /* Chrome, Edge and Safari */
@@ -48,12 +49,11 @@
     align-items: center;
     justify-content: flex-start;
     height: 85vh;
-    border-right: 1px solid;
     transition: all ease-in-out 0.5s;
 
     & hr{
         border: none;
-        height: 1px;
+        height: 5px;
         width: 60%;
         background-color: grey;
         margin: 30px 10px;
@@ -66,13 +66,13 @@
         color: grey;
         margin-top: 15px;
         cursor: pointer;
-        transition: all ease-in-out 0.5s;
+        transition: all ease-in-out 0.2s;
     }
     & p:hover{
         color: black;
+        background-color: #199ce226;
         padding: 5px;
         border-radius: 10px;
-        background-color: aliceblue;
         transform: scale(1.05);
     }
 
@@ -140,14 +140,15 @@
             }
         }
         & li:hover{
+            background-color: #199ce226;
             transform: scale(1.02);
         }
     }
 
     span{
         font-size: 26px;
-        color: #199BE2;
-        text-shadow: -1px 2px 0px rgba(255, 255, 255, 0.6);
+        color: white;
+        text-shadow: -1px 2px 0px #026194;
         transition: all ease-in-out 0.5s;
     }
 }

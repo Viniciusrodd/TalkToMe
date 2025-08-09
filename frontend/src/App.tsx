@@ -21,7 +21,7 @@ function App() {
                     <Route path='/login' element={ <Login /> } />
 
                     { /* homepage */ }
-                    <Route path='/talkToMe' element={ <Homepage /> } />
+                    <Route path='/' element={ <Homepage /> } />
                 </Routes>
             </BrowserRouter>
         </div>
