@@ -71,7 +71,7 @@ const Login = () => {
         }
     };
 
-    // redirect login
+    // redirect homepage
     useEffect(() =>{
         if(redirectHomepage){
             const timeout = setTimeout(() => {

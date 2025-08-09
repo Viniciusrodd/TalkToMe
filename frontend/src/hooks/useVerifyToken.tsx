@@ -5,38 +5,29 @@ import axios, { AxiosError } from 'axios';
 // hooks
 import { useState, useEffect } from 'react';
 
-
-// user interface
-interface iUser{
-    id: number;
-    name: string;
-    email: string;
-}
-
 // api response interface
 interface iVerifyTokenResponse{
-    user?: iUser;
     message?: string;
 }
 
 
 // use verify token
-export const useVerifyToken = () =>{
+export const verifyToken = () =>{
     // states
-    const [ userData, setUserData ] = useState<iUser | null>(null);
+    const [ status, setStatus ] = useState<string>('');
     const [ errorRes, setErrorRes ] = useState<string | null>(null);
 
 
     useEffect(() =>{
-        const verifyToken = async (): Promise<void> =>{
+        const request = async (): Promise<void> =>{
             try{
-                const { data } = await axios.get<iVerifyTokenResponse>(
+                const res = await axios.get<iVerifyTokenResponse>(
                     'http://localhost:2140/verifyToken',
                     { withCredentials: true }
                 );
-
-                // check user data
-                data.user ? setUserData(data.user) : setErrorRes('User data not found in response');
+                if(res.status === 200){
+                    setStatus('ok');
+                }
             }
             catch(error){
                 if(error instanceof AxiosError){
@@ -51,9 +42,9 @@ export const useVerifyToken = () =>{
             }
         };
 
-        verifyToken();
+        request();
     }, []);
 
 
-    return { userData, errorRes };
+    return { status, errorRes };
 };
