@@ -32,7 +32,7 @@ const Homepage = () => {
     const [ isTyping, setIsTyping ] = useState<string>('');
     const [ showSendIcon, setShowSendIcon ] = useState<boolean>(false);
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
-    const [ clearMessage, setClearMessage ] = useState<boolean>(false);
+    const [ clearMessage ] = useState<boolean>(false);
 
 
     // consts
@@ -65,7 +65,7 @@ const Homepage = () => {
     
     // close modal
     const closeModal = () =>{
-        if(modal_btt_2 !== false){
+        if(modal_btt_2 !== false || modal_btt !== false){
             modal_config({
                 title: '', msg: '', btt1: false, 
                 btt2: false, display: false
@@ -115,11 +115,8 @@ const Homepage = () => {
         if(status === 'ok' && userName !== ''){
             modal_config({
                 title: 'Success ✅', msg: `Hello <${ userName }> 👋, \nWelcome to the best LLm's ever`, 
-                btt1: false, btt2: false, display: true
+                btt1: 'Continuar', btt2: false, display: true
             });
-
-            // clear message
-            setClearMessage(true);
         }
         if(errorRes){
             console.log('Error at verify token at homepage: ', errorRes);
@@ -150,6 +147,7 @@ const Homepage = () => {
                 btt2={ modal_btt_2 }
                 display={ modal_display }
                 onClose={ closeModal }
+                modalEvent={ closeModal }
             />
 
             { /* homepage + sidebar container */ }

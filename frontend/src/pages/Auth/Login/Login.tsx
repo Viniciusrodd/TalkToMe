@@ -14,6 +14,7 @@ import { user_login } from '../../../services/AuthService';
 
 // context
 import { UserContext } from '../../../context/UserContext';
+import { LoadingContext } from '../../../context/LoadingContext';
 
 
 // login
@@ -48,6 +49,7 @@ const Login = () => {
     // consts
     const navigate = useNavigate();
     const { setUserName } = useContext(UserContext);
+    const { loading, setLoading } = useContext(LoadingContext);
 
 
     // functions
@@ -75,6 +77,16 @@ const Login = () => {
         }
     };
 
+    // loading check
+    useEffect(() =>{
+        if(loading){
+            modal_config({
+                title: 'Loading...🔄⌛️', msg: '', btt1: false, 
+                btt2: false, display: true
+            });  
+        }
+    }, [loading]);
+
     // redirect homepage
     useEffect(() =>{
         if(redirectHomepage){
@@ -96,8 +108,10 @@ const Login = () => {
     // form
     const handle_form = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
+        setLoading(true);
 
         if(formData.password !== confirmPassword){
+            setLoading(false);
             modal_config({
                 title: 'Error ❗', msg: 'passwords must be equals', btt1: false, 
                 btt2: 'try again', display: true
@@ -109,13 +123,14 @@ const Login = () => {
             const res = await user_login(formData);
             if(res.status === 200){
                 console.log('User login successfully');
-
+                
                 // set name context
                 res.data.data?.name ? setUserName(res.data.data?.name) : setUserName('');
 
                 // redirect
                 setRedirectHomepage(true);
-                
+
+                setLoading(false);
                 // clean states
                 //setFormData({ email: '', password: '' });
                 //setConfirmPassword('');
@@ -125,6 +140,7 @@ const Login = () => {
             console.log('Full error: ', error);
 
             if(error instanceof Error){
+                setLoading(false);
                 modal_config({
                     title: 'Error ❗', msg: error.message, btt1: false, 
                     btt2: 'try again', display: true

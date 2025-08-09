@@ -3,7 +3,11 @@
 import axios, { AxiosError } from 'axios';
 
 // hooks
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+
+// context
+import { LoadingContext } from '../context/LoadingContext';
+
 
 // api response interface
 interface iVerifyTokenResponse{
@@ -17,9 +21,14 @@ export const verifyToken = () =>{
     const [ status, setStatus ] = useState<string>('');
     const [ errorRes, setErrorRes ] = useState<string | null>(null);
 
+    // consts
+    const { setLoading } = useContext(LoadingContext);
 
+
+    // functions
     useEffect(() =>{
         const request = async (): Promise<void> =>{
+            setLoading(true);
             try{
                 const res = await axios.get<iVerifyTokenResponse>(
                     'http://localhost:2140/verifyToken',
@@ -27,6 +36,7 @@ export const verifyToken = () =>{
                 );
                 if(res.status === 200){
                     setStatus('ok');
+                    setLoading(false);
                 }
             }
             catch(error){
