@@ -6,11 +6,14 @@ import '../../../utils/AuthCss/AuthStyles.css';
 import Modal from '../../../components/Modal/Modal';
 
 // hooks
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // service
 import { user_login } from '../../../services/AuthService';
+
+// context
+import { UserContext } from '../../../context/UserContext';
 
 
 // login
@@ -44,6 +47,7 @@ const Login = () => {
 
     // consts
     const navigate = useNavigate();
+    const { setUserName } = useContext(UserContext);
 
 
     // functions
@@ -106,17 +110,15 @@ const Login = () => {
             if(res.status === 200){
                 console.log('User login successfully');
 
-                // clean states
-                setFormData({ email: '', password: '' });
-                setConfirmPassword('');
+                // set name context
+                res.data.data?.name ? setUserName(res.data.data?.name) : setUserName('');
 
-                // modal advice
-                modal_config({
-                    title: 'Success ✅', msg: `Hello <${res.data.data?.name}> 👋, \nYou will be redirect to Homepage`, 
-                    btt1: false, btt2: false, display: true
-                });
-
+                // redirect
                 setRedirectHomepage(true);
+                
+                // clean states
+                //setFormData({ email: '', password: '' });
+                //setConfirmPassword('');
             }
         }
         catch(error){

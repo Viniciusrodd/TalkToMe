@@ -8,9 +8,12 @@ import SideBar from '../../components/SideBar/SideBar';
 import Modal from '../../components/Modal/Modal';
 
 // hooks
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { verifyToken } from '../../hooks/useVerifyToken'; // custom hook
+
+// context
+import { UserContext } from '../../context/UserContext';
 
 
 // homepage
@@ -29,10 +32,12 @@ const Homepage = () => {
     const [ isTyping, setIsTyping ] = useState<string>('');
     const [ showSendIcon, setShowSendIcon ] = useState<boolean>(false);
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
+    const [ clearMessage, setClearMessage ] = useState<boolean>(false);
 
 
     // consts
     const navigate = useNavigate();
+    const { userName } = useContext(UserContext);
 
 
     // modal
@@ -73,7 +78,7 @@ const Homepage = () => {
         setShowSendIcon(isTyping.trim() !== '');
     }, [isTyping]);
 
-    // login redirect
+    // login redirect + clear message
     useEffect(() =>{
         if(loginRedirect){
             const timeout = setTimeout(() => {
@@ -89,13 +94,32 @@ const Homepage = () => {
                 clearTimeout(timeout);
             };
         }
-    }, [loginRedirect]);
+
+        if(clearMessage){
+            const timeout = setTimeout(() => {
+                modal_config({
+                    title: '', msg: '', btt1: false, 
+                    btt2: false, display: false
+                });  
+            }, 3000);
+
+            return () =>{
+                clearTimeout(timeout);
+            };
+        }
+    }, [loginRedirect, clearMessage]);
 
     // verify token
     const { status, errorRes } = verifyToken();
     useEffect(() =>{
-        if(status === 'ok'){
-            console.log(status);
+        if(status === 'ok' && userName !== ''){
+            modal_config({
+                title: 'Success ✅', msg: `Hello <${ userName }> 👋, \nWelcome to the best LLm's ever`, 
+                btt1: false, btt2: false, display: true
+            });
+
+            // clear message
+            setClearMessage(true);
         }
         if(errorRes){
             console.log('Error at verify token at homepage: ', errorRes);
@@ -103,6 +127,8 @@ const Homepage = () => {
                 title: 'Error ❗', msg: 'Necessary Login to continue', btt1: false, 
                 btt2: false, display: true
             });
+
+            // redirect to login
             setLoginRedirect(true);
         }
     }, [status, errorRes]);
