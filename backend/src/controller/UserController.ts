@@ -182,6 +182,59 @@ class UserController{
             });
         }
     };
+
+    
+    // get user data
+    async getUser(
+        req: Request,
+        res: Response< ApiResponse<UserResponse> >
+    ){
+        try{
+            // get token
+            const token = req.cookies.token;
+            if(!token){
+                return res.status(401).json({
+                    success: false,
+                    message: 'token not found'
+                });
+            }
+
+            // decodefying token
+            const decoded = jwt.verify(token, secretToken as string) as {
+                id: string;
+                name: string;
+                email: string;
+                iat: number;
+                exp: number;
+            };
+
+            // get user
+            const user = await models.User.findOne({
+                where: { id: decoded.id },
+                attributes: [ 'id', 'name' ]
+            });
+            if(!user){
+                return res.status(404).json({
+                    success: false,
+                    message: 'User not found'
+                });
+            }
+
+            return res.status(200).send({
+                success: true,
+                message: 'Get user data success',
+                data: { id: user.id, name: user.name }
+            });
+        }
+        catch(error: unknown){
+            console.error('Internal server error at Get user data: ', error);
+            return res.status(500).send({
+                success: false,
+                message: 'Internal server error at Get user data',
+                errorMessage: this.getErrorMessage(error)
+            });
+        }
+    };
 };
 
 
