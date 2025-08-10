@@ -48,7 +48,7 @@ const Login = () => {
 
     // consts
     const navigate = useNavigate();
-    const { setUserName } = useContext(UserContext);
+    const { userName, setUserName, userId, setUserId } = useContext(UserContext);
     const { loading, setLoading } = useContext(LoadingContext);
 
 
@@ -122,10 +122,15 @@ const Login = () => {
         try{
             const res = await user_login(formData);
             if(res.status === 200){
-                console.log('User login successfully');
+                console.log('User login successfully', res.data);
                 
                 // set name context
-                res.data.data?.name ? setUserName(res.data.data?.name) : setUserName('');
+                if(userName === ''){
+                    res.data.data?.name ? setUserName(res.data.data?.name) : setUserName('');
+                }
+                if(userId === ''){
+                    res.data.data?.id ? setUserId(res.data.data?.id) : setUserId('');
+                }
 
                 // redirect
                 setRedirectHomepage(true);

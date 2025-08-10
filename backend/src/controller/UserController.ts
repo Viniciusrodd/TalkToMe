@@ -35,7 +35,7 @@ interface UserLoginRequest{
 
 // user respose
 interface UserResponse{
-    id?: string;
+    id: string;
     name: string;
 };
 
@@ -100,7 +100,7 @@ class UserController{
             return res.status(201).send({
                 success: true,
                 message: 'User creation success',
-                data: { name: newUser.name }
+                data: { id: newUser.id, name: newUser.name }
             });
         }
         catch(error: unknown){

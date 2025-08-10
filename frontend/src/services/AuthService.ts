@@ -19,7 +19,7 @@ interface IUserLogin{
 interface ApiResponse{
     success: boolean; 
     message: string; 
-    data?: { name: string; }; 
+    data?: { id: string; name: string; }; 
     error?: string;
 };
 

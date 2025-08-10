@@ -38,7 +38,7 @@ const Homepage = () => {
 
     // consts
     const navigate = useNavigate();
-    const { userName } = useContext(UserContext);
+    const { userName, userId } = useContext(UserContext);
 
 
     // modal
@@ -51,6 +51,12 @@ const Homepage = () => {
 
     // functions
 
+    /*
+    useEffect(() =>{
+        if(userName !== '' && userId !== '') console.log('user data: ', userName, userId)
+        else console.log('user data empty: ', userName, userId)
+    }, [userName, userId]);
+    */
 
     // modal config
     const modal_config = ({ title, msg, btt1, btt2, display }: IModalConfig) => {
