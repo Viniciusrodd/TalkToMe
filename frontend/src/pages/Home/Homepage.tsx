@@ -12,6 +12,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { verifyToken } from '../../hooks/useVerifyToken'; // custom hook
 
+// service
+import { get_user_data } from '../../services/getUserService';
+
 // context
 import { UserContext } from '../../context/UserContext';
 
@@ -38,7 +41,7 @@ const Homepage = () => {
 
     // consts
     const navigate = useNavigate();
-    const { userName, userId } = useContext(UserContext);
+    const { userName, setUserName, userId, setUserId } = useContext(UserContext);
 
 
     // modal
@@ -51,12 +54,27 @@ const Homepage = () => {
 
     // functions
 
-    /*
+
+    // get user data + udpate user contexts
     useEffect(() =>{
-        if(userName !== '' && userId !== '') console.log('user data: ', userName, userId)
-        else console.log('user data empty: ', userName, userId)
-    }, [userName, userId]);
-    */
+        if(userName === '' && userId === ''){ 
+            const getUser = async () =>{
+                try{
+                    const res = await get_user_data();
+                    if(res.status === 200){
+                        // set context
+                        setUserId(res.data.data?.id || '');
+                        setUserName(res.data.data?.name || '');
+                    }
+                }
+                catch(error){
+                    console.log(error);
+                }
+            };
+            getUser();
+        }
+    }, [userName, setUserName, userId, setUserId]);
+    
 
     // modal config
     const modal_config = ({ title, msg, btt1, btt2, display }: IModalConfig) => {
@@ -145,7 +163,6 @@ const Homepage = () => {
     };
     useEffect(() =>{
         if(file !== null) console.log(file)
-        else console.log('file is empty');
     }, [file]);
 
 
