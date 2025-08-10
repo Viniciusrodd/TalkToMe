@@ -35,6 +35,7 @@ interface UserLoginRequest{
 
 // user respose
 interface UserResponse{
+    id?: string;
     name: string;
 };
 
@@ -54,6 +55,7 @@ class UserController{
         return String(error);
         // if "error" its a instance from Error, we can access his properties, like "error.message" with safety
     };
+
 
     // register
     async registerUser(
@@ -168,7 +170,7 @@ class UserController{
             return res.status(200).send({
                 success: true,
                 message: 'User login success',
-                data: { name: user_exist.name }
+                data: { id: user_exist.id, name: user_exist.name }
             });
         }
         catch(error: unknown){

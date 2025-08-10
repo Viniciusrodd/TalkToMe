@@ -138,7 +138,8 @@ const Homepage = () => {
         }
     };
     useEffect(() =>{
-        if(file !== null) console.log(file);
+        if(file !== null) console.log(file)
+        else console.log('file is empty');
     }, [file]);
 
 
