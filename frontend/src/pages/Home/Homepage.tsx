@@ -33,6 +33,7 @@ const Homepage = () => {
     const [ showSendIcon, setShowSendIcon ] = useState<boolean>(false);
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
     const [ clearMessage ] = useState<boolean>(false);
+    const [ file, setFile ] = useState<File | null>(null);
 
 
     // consts
@@ -130,6 +131,16 @@ const Homepage = () => {
         }
     }, [status, errorRes]);
 
+    // upload file
+    const uploadFile = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        if(e.target.files && e.target.files.length > 0){
+            setFile(e.target.files[0]);
+        }
+    };
+    useEffect(() =>{
+        if(file !== null) console.log(file);
+    }, [file]);
+
 
     // jsx
 
@@ -158,23 +169,41 @@ const Homepage = () => {
                 { /* homepage */ }
                 <div className={ styles.homepage }>
                     <h1>What can I help with ?</h1>
-                    <div className={ styles.interect_container }>
-                        <div className={ styles.utils }>
-                            <span className="material-symbols-outlined">add</span>
-                        </div>
 
+                    <div className={ styles.interect_container }>
+                        <input title='file' type="file" name="add_file" id='add_file' className={ styles.file_input } 
+                        onChange={ uploadFile } accept=".txt,.csv,.json,.xml,.pdf,.docx,.pptx,.xlsx,.md,.py,.js,.html,.css,.sql,.eml"/>
+                        <button type='button' className={ styles.utils }>
+                            <label htmlFor="add_file">
+                                <span className="material-symbols-outlined">add</span>
+                            </label>
+                        </button>
+
+                        { /* question input */ }
                         <input type="text" name="question" placeholder='Ask anithing...' value={ isTyping } 
                         onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setIsTyping(e.target.value) }/>
 
 
-                        <div className={ styles.utils }>
+                        <button type='button' className={ styles.utils }>
                             { showSendIcon ? (
                                 <span className={`material-symbols-outlined ${styles.is_send}`}>send</span>
                             ) : (
                                 <span className="material-symbols-outlined">mic</span>
                             ) }
-                        </div>
+                        </button>
                     </div>
+
+                    {
+                        file && file !== null && (
+                            <div className={ styles.file_div }>
+                                <img src="../../../images/util_images/file.png" alt="" />
+                                <p>{ file.name }</p>
+                                <span onClick={ () => setFile(null) } className="material-symbols-outlined">
+                                    delete
+                                </span>
+                            </div>
+                        ) 
+                    }
                 </div>
             </div>
         </div>

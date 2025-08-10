@@ -47,7 +47,7 @@ const SideBar = () => {
                                     <span className="material-symbols-outlined">search</span>
                                     <input type="text" name="" placeholder='Search for chats...' />
                                     <button type='submit'>
-                                        Submit
+                                        Search
                                     </button>
                                 </li>
                             ) : (

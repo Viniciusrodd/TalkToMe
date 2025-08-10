@@ -50,7 +50,6 @@
     justify-content: flex-start;
     height: 85vh;
     transition: all ease-in-out 0.5s;
-    border-right: 0.5px solid;
 
     & hr{
         border: none;
@@ -67,7 +66,7 @@
         color: lightgrey;
         margin-top: 15px;
         cursor: pointer;
-        transition: all ease-in-out 0.2s;
+        transition: all ease-in-out 0.3s;
     }
     & p:hover{
         background-color: #349ed626;
