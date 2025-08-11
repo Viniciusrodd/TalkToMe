@@ -32,11 +32,13 @@ const Homepage = () => {
 
 
     // states
-    const [ isTyping, setIsTyping ] = useState<string>('');
+    const [ messageValue, setMesageValue ] = useState<string>('');
     const [ showSendIcon, setShowSendIcon ] = useState<boolean>(false);
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
     const [ clearMessage ] = useState<boolean>(false);
     const [ file, setFile ] = useState<File | null>(null);
+    const [ conversation, setConversation ] = useState<boolean>(false);
+    const [ userMessage, setUserMessage ] = useState<string>('');
 
 
     // consts
@@ -100,8 +102,8 @@ const Homepage = () => {
 
     // send message icone
     useEffect(() =>{
-        setShowSendIcon(isTyping.trim() !== '');
-    }, [isTyping]);
+        setShowSendIcon(messageValue.trim() !== '');
+    }, [messageValue]);
 
     // login redirect + clear message
     useEffect(() =>{
@@ -165,6 +167,26 @@ const Homepage = () => {
         if(file !== null) console.log(file)
     }, [file]);
 
+    // send message
+    const send_message = () =>{
+        if(messageValue === ''){
+            modal_config({
+                title: 'Wait ❗', msg: 'Please, ask something...', btt1: false, 
+                btt2: 'Write a message', display: true
+            });
+        }
+
+        // start conversation
+        setConversation(true);
+
+        // set message
+        setUserMessage(messageValue);
+
+        // clear message
+        setMesageValue('');
+        console.log('message send: ', messageValue);
+    };
+
 
     // jsx
 
@@ -192,7 +214,30 @@ const Homepage = () => {
 
                 { /* homepage */ }
                 <div className={ styles.homepage }>
-                    <h1>What can I help with ?</h1>
+
+                    {
+                        conversation ? (
+                            <div className={ styles.coversation_container }>
+                                <p className={ styles.user_name }>
+                                    { `<${userName}>` }
+                                </p>
+                                <div className={ styles.user_message_container }>
+                                    <p>
+                                        { userMessage }
+                                    </p>
+                                </div>
+
+                                <p className={ styles.llm_name }>
+                                    { `<IA>` }
+                                </p>
+                                <div className={ styles.llm_message_container }>
+                                    <p>llm message</p>
+                                </div>
+                            </div>                            
+                        ) : (
+                            <h1>What can I help with ?</h1>
+                        )
+                    }
 
                     <div className={ styles.interect_container }>
                         <input title='file' type="file" name="add_file" id='add_file' className={ styles.file_input } 
@@ -204,17 +249,21 @@ const Homepage = () => {
                         </button>
 
                         { /* question input */ }
-                        <input type="text" name="question" placeholder='Ask anithing...' value={ isTyping } 
-                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setIsTyping(e.target.value) }/>
+                        <input type="text" name="question" placeholder='Ask anithing...' value={ messageValue } 
+                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setMesageValue(e.target.value) }/>
 
 
-                        <button type='button' className={ styles.utils }>
-                            { showSendIcon ? (
-                                <span className={`material-symbols-outlined ${styles.is_send}`}>send</span>
-                            ) : (
+                        { showSendIcon ? (
+                            <button onClick={ send_message } type='button' className={ styles.utils }>
+                                <span className={`material-symbols-outlined ${styles.is_send}`}>
+                                    send
+                                </span>
+                            </button>
+                        ) : (
+                            <button type='button' className={ styles.utils }>
                                 <span className="material-symbols-outlined">mic</span>
-                            ) }
-                        </button>
+                            </button>
+                        ) }
                     </div>
 
                     {
