@@ -6,13 +6,16 @@ import App from './App.tsx'
 // providers
 import { UserProvider } from './context/UserContext.tsx'
 import { LoadingProvider } from './context/LoadingContext.tsx'
+import { ConversationProvider } from './context/ConversationContext.tsx'
 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <UserProvider>
         <LoadingProvider>
-            <App />
+            <ConversationProvider>
+                <App />
+            </ConversationProvider>
         </LoadingProvider>
     </UserProvider>
   </StrictMode>,

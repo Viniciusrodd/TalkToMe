@@ -3,7 +3,10 @@
 import styles from './SideBar.module.css';
 
 // hooks
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+
+// context
+import { ConversationContext } from '../../context/ConversationContext';
 
 
 // sidebar
@@ -11,6 +14,9 @@ const SideBar = () => {
     // states
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
+
+    // consts
+    const { conversation, setConversation } = useContext(ConversationContext);
 
 
     // functions
@@ -26,6 +32,11 @@ const SideBar = () => {
     const search_chat = () =>{
         setIsSearching(!isSearching);
         setIsOpen(!isOpen);
+    };
+
+    // new conversation
+    const new_conversation = () =>{
+        if(conversation) setConversation(false);
     };
 
 
@@ -57,7 +68,7 @@ const SideBar = () => {
                                 </li>
                             )
                         }
-                        <li>
+                        <li onClick={ new_conversation }>
                             <span className="material-symbols-outlined">chat_add_on</span>
                             New chat
                         </li>
@@ -110,8 +121,8 @@ const SideBar = () => {
                                 </li>
                             )
                         }
-                        <li>
-                            <span className="material-symbols-outlined">person</span>
+                        <li onClick={ new_conversation }>
+                            <span className="material-symbols-outlined">chat_add_on</span>
                         </li>
                     </ul>
                 )
