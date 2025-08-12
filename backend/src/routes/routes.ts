@@ -4,6 +4,7 @@ const router = Router();
 
 // controllers
 import UserController from '../controller/UserController';
+import InteractionController from '../controller/InteractionController';
 
 // handle validation - middleware
 import validate from '../middlewares/HandleValidation';
@@ -25,6 +26,11 @@ router.get('/verifyToken', verifyToken, (req: Request, res: Response) =>{
 router.post('/register', validations.user_register_validation(), validate, UserController.registerUser);
 router.post('/login', validations.user_login_validation(), validate, UserController.login);
 router.get('/user', verifyToken, UserController.getUser);
+
+
+// interections - backend port: 2140
+router.post('/chatInterection', verifyToken, InteractionController.chatInteraction);
+
 
 
 // export

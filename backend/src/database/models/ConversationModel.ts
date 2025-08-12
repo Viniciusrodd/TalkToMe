@@ -4,10 +4,11 @@ import connection from "../connection/connection";
 import { v4 } from "uuid";
 
 
+// conversation attributes
 interface ConversationAttributes{
-    id: number;
+    id: string;
     title: string;
-    userId: number;
+    userId: string;
     model?: string;
     createdAt?: Date;
     updatedAt?: Date
@@ -18,9 +19,9 @@ type ConversationOptionAttributes = Optional<ConversationAttributes, 'id' | 'mod
 
 // class
 class Conversation extends Model<ConversationAttributes, ConversationOptionAttributes> implements ConversationAttributes{
-    public id!: number;
+    public id!: string;
     public title!: string;
-    public userId!: number;
+    public userId!: string;
     public model!: string;
 
     // timestamps

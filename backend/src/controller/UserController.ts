@@ -65,7 +65,7 @@ class UserController{
         const { name, email, password } = req.body;
         if(!name || !email || !password){
             return res.status(400).send({
-                success: true,
+                success: false,
                 message: 'Bad request at fields sended'
             });
         }
@@ -122,7 +122,7 @@ class UserController{
         const { email, password } = req.body;
         if(!email || !password){
             return res.status(400).send({
-                success: true,
+                success: false,
                 message: 'Bad request at fields sended'
             });
         }
