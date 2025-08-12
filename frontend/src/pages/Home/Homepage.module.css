@@ -26,6 +26,15 @@
         transition: all ease-in-out 0.5s;
     }
 
+    & .title_chat{
+        font-style: italic;
+        letter-spacing: 1px;
+        text-decoration: overline;
+        font-weight: bold;
+        color: azure;
+        font-size: 22px;
+        margin: 0px 0px 20px 0px;
+    }
 }
 
 .coversation_container{

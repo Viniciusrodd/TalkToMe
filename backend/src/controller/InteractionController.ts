@@ -20,8 +20,7 @@ interface InterectRequest{
 interface contentResponse{
     id?: string;
     title: string;
-    content: string;
-    result?: string;
+    llm_result: string;
 }
 
 // api response
@@ -50,7 +49,11 @@ class InteractionController{
     };
 
 
-    // chat interaction
+    // chat interaction =
+    // 1. send msg to mistral 
+    // 2. save conversations
+    // 3. save messages
+    // 4. send: title chat + llm_response 
     async chatInteraction(
         req: Request<{}, {}, InterectRequest>,
         res: Response<ApiResponse<contentResponse>>
@@ -120,7 +123,7 @@ class InteractionController{
             return res.status(200).send({
                 success: true,
                 message: 'Chat interection success',
-                data: { content: result, title }
+                data: { llm_result: result, title }
             });
         }
         catch(error: unknown){

@@ -39,6 +39,7 @@ const Homepage = () => {
     const [ clearMessage ] = useState<boolean>(false);
     const [ file, setFile ] = useState<File | null>(null);
     const [ userMessage, setUserMessage ] = useState<string[]>([]);
+    const [ titleChat ] = useState<string>('titulo teste...');
 
 
     // consts
@@ -236,6 +237,10 @@ const Homepage = () => {
                 <div className={ styles.homepage }>
                     {
                         conversation ? (
+                            <>
+                            <h1 className={ styles.title_chat }>
+                                { titleChat }
+                            </h1>
                             <div className={ styles.coversation_container } ref={ conversationContainerRef }>
                                 { userMessage && userMessage.map((msg) => (
                                     <>
@@ -256,7 +261,8 @@ const Homepage = () => {
                                     </div>
                                     </>
                                 )) }
-                            </div>                            
+                            </div>
+                            </>                            
                         ) : (
                             <h1>What can I help with ?</h1>
                         )
