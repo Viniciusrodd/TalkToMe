@@ -82,7 +82,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 5px 7% 15px 30px;
+        margin: 5px 7% 5% 30px;
         padding: 10px 10px;
         min-width: 80%;
         max-width: 80%;
@@ -204,4 +204,8 @@
         outline: none;
         background-color: rgba(82, 164, 209, 0.461);
     }
+}
+
+.interect_container_in_conversation{
+    width: 70%;
 }

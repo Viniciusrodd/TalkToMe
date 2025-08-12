@@ -8,7 +8,7 @@ import SideBar from '../../components/SideBar/SideBar';
 import Modal from '../../components/Modal/Modal';
 
 // hooks
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { verifyToken } from '../../hooks/useVerifyToken'; // custom hook
 
@@ -38,13 +38,14 @@ const Homepage = () => {
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
     const [ clearMessage ] = useState<boolean>(false);
     const [ file, setFile ] = useState<File | null>(null);
-    const [ userMessage, setUserMessage ] = useState<string>('');
+    const [ userMessage, setUserMessage ] = useState<string[]>([]);
 
 
     // consts
     const navigate = useNavigate();
     const { userName, setUserName, userId, setUserId } = useContext(UserContext);
     const { conversation, setConversation } = useContext(ConversationContext);
+    const conversationContainerRef = useRef<HTMLDivElement>(null);
 
 
     // modal
@@ -181,7 +182,7 @@ const Homepage = () => {
         setConversation(true);
 
         // set message
-        setUserMessage(messageValue);
+        setUserMessage([...userMessage, messageValue]);
 
         // clear message
         setMesageValue('');
@@ -195,6 +196,16 @@ const Homepage = () => {
             setFile(null);
         }
     }, [ conversation ]);
+
+    // chat automatic scroll
+    useEffect(() =>{
+        if(conversationContainerRef){
+            conversationContainerRef.current?.scrollTo({
+                top: conversationContainerRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }, [ userMessage ]);
 
 
     // jsx
@@ -223,32 +234,39 @@ const Homepage = () => {
 
                 { /* homepage */ }
                 <div className={ styles.homepage }>
-
                     {
                         conversation ? (
-                            <div className={ styles.coversation_container }>
-                                <p className={ styles.user_name }>
-                                    { `<${userName}>` }
-                                </p>
-                                <div className={ styles.user_message_container }>
-                                    <p>
-                                        { userMessage }
+                            <div className={ styles.coversation_container } ref={ conversationContainerRef }>
+                                { userMessage && userMessage.map((msg) => (
+                                    <>
+                                    <p className={ styles.user_name }>
+                                        { `<${userName}>` }
                                     </p>
-                                </div>
-
-                                <p className={ styles.llm_name }>
-                                    { `<IA>` }
-                                </p>
-                                <div className={ styles.llm_message_container }>
-                                    <p>llm message</p>
-                                </div>
+                                    <div className={ styles.user_message_container }>
+                                        <p>
+                                            { msg }
+                                        </p>
+                                    </div>
+                                
+                                    <p className={ styles.llm_name }>
+                                        { `<IA>` }
+                                    </p>
+                                    <div className={ styles.llm_message_container }>
+                                        <p>llm message</p>
+                                    </div>
+                                    </>
+                                )) }
                             </div>                            
                         ) : (
                             <h1>What can I help with ?</h1>
                         )
                     }
 
-                    <div className={ styles.interect_container }>
+                    <div className={ 
+                        conversation 
+                        ? ` ${styles.interect_container} ${styles.interect_container_in_conversation} `
+                        : styles.interect_container
+                    }>
                         <input title='file' type="file" name="add_file" id='add_file' className={ styles.file_input } 
                         onChange={ uploadFile } accept=".txt,.csv,.json,.xml,.pdf,.docx,.pptx,.xlsx,.md,.py,.js,.html,.css,.sql,.eml"/>
                         <button type='button' className={ styles.utils }>
