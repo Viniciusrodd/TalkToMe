@@ -2,6 +2,13 @@
 // libs
 import axios, { type AxiosResponse } from 'axios';
 
+// chat interaction request
+interface IchatRequestData{
+    text: string;
+    userId: string;
+    sender: string;
+};
+
 // api response interface
 interface ApiResponse{
     success: boolean; 
@@ -15,9 +22,12 @@ interface ApiResponse{
 
 
 // get llm response + chat title
-export const chat_interaction = async (): Promise< AxiosResponse<ApiResponse> > =>{
+export const chat_interaction = async (data: IchatRequestData): Promise< AxiosResponse<ApiResponse> > =>{
     try{
-        const response = await axios.post('http://localhost:2140/chatInterection', { withCredentials: true });
+        const response = await axios.post(
+            'http://localhost:2140/chatInterection', 
+            data, { withCredentials: true }
+        );
         return response;
     }
     catch(error){

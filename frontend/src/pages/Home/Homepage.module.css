@@ -44,7 +44,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-end;
-    height: 65vh;
+    height: 60vh;
     width: 90%;
     margin-bottom: 50px;
     border-radius: 0px;
@@ -110,6 +110,15 @@
             overflow-wrap: anywhere;      /* deixa quebrar em qualquer ponto */
             white-space: normal;          /* permite quebra de linha */        
         }
+    }
+
+    & .loading{
+        text-align: center;
+        font-size: 20px;
+        font-style: italic;
+        letter-spacing: 1px;
+        margin-top: 25px;
+        margin-right: 45%;
     }
 }
 

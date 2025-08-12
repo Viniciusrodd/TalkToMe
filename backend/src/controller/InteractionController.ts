@@ -82,7 +82,6 @@ class InteractionController{
             // llm prompt
             const prompt = `Please respond in simple, clear English. 
             Keep answers concise (at maximum 1000 token for be more clear), 
-            and well-formatted for rendering in an HTML <p> tag. Use proper line breaks, spacing, 
             and avoid complex jargon. Text request: ${text}`;
 
             // llm request

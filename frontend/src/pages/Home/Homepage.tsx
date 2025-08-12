@@ -8,16 +8,18 @@ import SideBar from '../../components/SideBar/SideBar';
 import Modal from '../../components/Modal/Modal';
 
 // hooks
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { verifyToken } from '../../hooks/useVerifyToken'; // custom hook
 
 // service
 import { get_user_data } from '../../services/getUserService';
+import { chat_interaction } from '../../services/ChatService';
 
 // context
 import { UserContext } from '../../context/UserContext';
 import { ConversationContext } from '../../context/ConversationContext';
+import { LoadingContext } from '../../context/LoadingContext';
 
 
 // homepage
@@ -31,6 +33,12 @@ const Homepage = () => {
         display: boolean;
     };
 
+    // messages
+    interface Message{
+        sender: 'user' | 'llm';
+        content: string;
+    };
+
 
     // states
     const [ messageValue, setMesageValue ] = useState<string>('');
@@ -38,8 +46,8 @@ const Homepage = () => {
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
     const [ clearMessage ] = useState<boolean>(false);
     const [ file, setFile ] = useState<File | null>(null);
-    const [ userMessage, setUserMessage ] = useState<string[]>([]);
-    const [ titleChat ] = useState<string>('titulo teste...');
+    const [ titleChat, setTitleChat ] = useState<string>('titulo teste...');
+    const [ messages, setMessages ] = useState<Message[]>([]);
 
 
     // consts
@@ -47,6 +55,7 @@ const Homepage = () => {
     const { userName, setUserName, userId, setUserId } = useContext(UserContext);
     const { conversation, setConversation } = useContext(ConversationContext);
     const conversationContainerRef = useRef<HTMLDivElement>(null);
+    const { loading, setLoading } = useContext(LoadingContext);
 
 
     // modal
@@ -171,7 +180,7 @@ const Homepage = () => {
     }, [file]);
 
     // send message
-    const send_message = () =>{
+    const send_message = async () =>{
         if(messageValue === ''){
             modal_config({
                 title: 'Wait ❗', msg: 'Please, ask something...', btt1: false, 
@@ -183,11 +192,45 @@ const Homepage = () => {
         setConversation(true);
 
         // set message
-        setUserMessage([...userMessage, messageValue]);
+        setMessages(prev => [...prev, { sender: 'user', content: messageValue }]);
+
+        try{
+            setLoading(true);
+
+            // send message + get response // text, userid, sender
+            const data = {
+                text: messageValue,
+                userId,
+                sender: 'user'
+            };
+            const res = await chat_interaction(data);
+            if(res.status === 200){
+                //console.log('full response: ', res);
+                setLoading(false);
+
+                // set llm response
+                setMessages(prev => [...prev, {
+                    sender: 'llm',
+                    content: res.data.data?.llm_result || ''
+                }])
+
+                // chat title
+                setTitleChat(res.data.data?.title || '');
+            }
+        }
+        catch(error){
+            console.log('full error: ', error);
+
+            if(error instanceof Error){
+                modal_config({
+                    title: 'Error ❗', msg: error.message, btt1: false, 
+                    btt2: 'try again', display: true
+                });
+            }
+        }
 
         // clear message
         setMesageValue('');
-        console.log('message send: ', messageValue);
     };
 
     // clear on conversation desactive
@@ -206,7 +249,7 @@ const Homepage = () => {
                 behavior: 'smooth'
             });
         }
-    }, [ userMessage ]);
+    }, [ messages ]);
 
 
     // jsx
@@ -242,25 +285,39 @@ const Homepage = () => {
                                 { titleChat }
                             </h1>
                             <div className={ styles.coversation_container } ref={ conversationContainerRef }>
-                                { userMessage && userMessage.map((msg) => (
-                                    <>
-                                    <p className={ styles.user_name }>
-                                        { `<${userName}>` }
-                                    </p>
-                                    <div className={ styles.user_message_container }>
-                                        <p>
-                                            { msg }
-                                        </p>
-                                    </div>
-                                
-                                    <p className={ styles.llm_name }>
-                                        { `<IA>` }
-                                    </p>
-                                    <div className={ styles.llm_message_container }>
-                                        <p>llm message</p>
-                                    </div>
-                                    </>
-                                )) }
+                                {
+                                    messages && messages.map((msg, index) =>(
+                                        <Fragment key={ index }>
+                                            { msg.sender === 'user' ? (
+                                                <>
+                                                <p className={ styles.user_name }>
+                                                    { `<${userName}>` }
+                                                </p>
+                                                <div className={ styles.user_message_container }>
+                                                    <p>
+                                                        { msg.content }
+                                                    </p>
+                                                </div> 
+                                                </>
+                                            ) : (
+                                                <>
+                                                <p className={ styles.llm_name }>
+                                                    { `<IA>` }
+                                                </p>
+                                                <div className={ styles.llm_message_container }>
+                                                    <p>{ msg.content }</p>
+                                                </div>
+                                                </>
+                                            ) } 
+                                        </Fragment>
+                                    ))
+                                }
+                                { loading &&
+                                    <p className={ styles.loading }>
+                                        Loading...
+                                        <span className="material-symbols-outlined">cached</span>
+                                    </p> 
+                                }
                             </div>
                             </>                            
                         ) : (
@@ -283,7 +340,8 @@ const Homepage = () => {
 
                         { /* question input */ }
                         <input type="text" name="question" placeholder='Ask anithing...' value={ messageValue } 
-                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setMesageValue(e.target.value) }/>
+                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setMesageValue(e.target.value) }
+                        autoComplete='off'/>
 
 
                         { showSendIcon ? (
