@@ -38,7 +38,6 @@ const Homepage = () => {
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
     const [ clearMessage ] = useState<boolean>(false);
     const [ file, setFile ] = useState<File | null>(null);
-    //const [ conversation, setConversation ] = useState<boolean>(false);
     const [ userMessage, setUserMessage ] = useState<string>('');
 
 
