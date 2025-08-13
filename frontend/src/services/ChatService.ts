@@ -7,13 +7,14 @@ interface IchatRequestData{
     text: string;
     userId: string;
     sender: string;
+    conversationId: string | null;
 };
 
 // api response interface
 interface ApiResponse{
     success: boolean; 
     message: string; 
-    data?: { llm_result: string; title: string; }; 
+    data?: { llm_result: string; title: string; conversationId: string | null; }; 
     error?: string;
 };
 

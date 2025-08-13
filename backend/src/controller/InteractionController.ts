@@ -14,6 +14,7 @@ interface InterectRequest{
     text: string;
     userId: string;
     sender: string;
+    conversationId: string | null;
 };
 
 // content response
@@ -21,7 +22,8 @@ interface contentResponse{
     id?: string;
     title: string;
     llm_result: string;
-}
+    conversationId: string | null;
+};
 
 // api response
 interface ApiResponse<T = any>{
@@ -58,7 +60,7 @@ class InteractionController{
         req: Request<{}, {}, InterectRequest>,
         res: Response<ApiResponse<contentResponse>>
     ){
-        const { text, userId, sender } = req.body;
+        const { text, userId, sender, conversationId } = req.body;
         if(!text || !userId || !sender){
             return res.status(400).send({
                 success: false,
@@ -76,8 +78,18 @@ class InteractionController{
                 });
             }
 
-            // create title
+            // conversation_id access + title creation
+            let conversation_id = conversationId;
             const title = text.slice(0, 15) + '...' || text.slice(0, 5) + '...';
+            
+            // check conversation existence
+            if(!conversation_id){
+                // create title
+                const conversation_creation = await models.Conversation.create({
+                    title, userId
+                });
+                conversation_id = conversation_creation.id;
+            }
 
             // llm prompt
             const prompt = `Please respond in simple, clear English. 
@@ -91,38 +103,29 @@ class InteractionController{
                 'stream': false
             });
             const result = typeof llm_response.data === 'string' 
-                ? llm_response.data 
-                : llm_response.data.response;
-
-
-            // transactions - conversation + message (creation)
-            await connection.transaction(async (t) =>{
-                const conversation_creation = await models.Conversation.create({
-                    title, userId
-                });
-
-                // user message sended
-                await models.Messages.create({
-                    conversationId: conversation_creation.id,
-                    sender,
-                    tokensUsed: text.length,
-                    content: text
-                });
-
-                // llm's message sended
-                await models.Messages.create({
-                    conversationId: conversation_creation.id,
-                    sender: 'llm',
-                    tokensUsed: result.length,
-                    content: result
-                });
+            ? llm_response.data 
+            : llm_response.data.response;
+                        
+            // user message sended
+            await models.Messages.create({
+                conversationId: conversation_id,
+                sender,
+                tokensUsed: text.length,
+                content: text
             });
-
+            
+            // llm's message sended
+            await models.Messages.create({
+                conversationId: conversation_id,
+                sender: 'llm',
+                tokensUsed: result.length,
+                content: result
+            });
 
             return res.status(200).send({
                 success: true,
                 message: 'Chat interection success',
-                data: { llm_result: result, title }
+                data: { llm_result: result, title, conversationId: conversation_id }
             });
         }
         catch(error: unknown){

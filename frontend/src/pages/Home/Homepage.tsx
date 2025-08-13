@@ -46,8 +46,9 @@ const Homepage = () => {
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
     const [ clearMessage ] = useState<boolean>(false);
     const [ file, setFile ] = useState<File | null>(null);
-    const [ titleChat, setTitleChat ] = useState<string>('titulo teste...');
+    const [ titleChat, setTitleChat ] = useState<string>('');
     const [ messages, setMessages ] = useState<Message[]>([]);
+    const [ conversationId, setConversationId ] = useState<string | null>(null);
 
 
     // consts
@@ -181,7 +182,7 @@ const Homepage = () => {
 
     // send message
     const send_message = async () =>{
-        if(messageValue === ''){
+        if(messageValue.trim() === ''){
             modal_config({
                 title: 'Wait ❗', msg: 'Please, ask something...', btt1: false, 
                 btt2: 'Write a message', display: true
@@ -195,27 +196,32 @@ const Homepage = () => {
         setMessages(prev => [...prev, { sender: 'user', content: messageValue }]);
 
         try{
-            setLoading(true);
-
-            // send message + get response // text, userid, sender
+            setLoading(true);            
+            
+            // message data
             const data = {
                 text: messageValue,
                 userId,
-                sender: 'user'
+                sender: 'user',
+                conversationId
             };
+            
             const res = await chat_interaction(data);
+            setLoading(false);
+            
             if(res.status === 200){
-                //console.log('full response: ', res);
-                setLoading(false);
-
+                // set current conversation id
+                if(!conversationId && res.data.data?.conversationId){
+                    setConversationId(res.data.data?.conversationId);
+                    // chat title
+                    setTitleChat(res.data.data?.title || '');
+                }
+                
                 // set llm response
                 setMessages(prev => [...prev, {
                     sender: 'llm',
                     content: res.data.data?.llm_result || ''
-                }])
-
-                // chat title
-                setTitleChat(res.data.data?.title || '');
+                }]);
             }
         }
         catch(error){
@@ -238,6 +244,9 @@ const Homepage = () => {
         if(conversation === false){
             setMesageValue('');
             setFile(null);
+            setConversationId(null);
+            setMessages([]);
+            setTitleChat('');
         }
     }, [ conversation ]);
 
