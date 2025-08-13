@@ -2,6 +2,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import connection from "../connection/connection";
 import { v4 } from "uuid";
+import Message from "./MessagesModel";
 
 
 // conversation attributes
@@ -11,7 +12,8 @@ interface ConversationAttributes{
     userId: string;
     model?: string;
     createdAt?: Date;
-    updatedAt?: Date
+    updatedAt?: Date;
+    messages?: Message[];
 };
 
 // option attributes
@@ -23,10 +25,13 @@ class Conversation extends Model<ConversationAttributes, ConversationOptionAttri
     public title!: string;
     public userId!: string;
     public model!: string;
-
+    
     // timestamps
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
+    
+    // message
+    public readonly messages?: Message[];
 };
 
 

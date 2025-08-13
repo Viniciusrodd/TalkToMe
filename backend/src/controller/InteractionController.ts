@@ -7,6 +7,7 @@ import axios from 'axios';
 
 // express
 import { Request, Response } from 'express';
+import Conversation from "../database/models/ConversationModel";
 
 
 // interect request
@@ -25,6 +26,23 @@ interface contentResponse{
     conversationId: string | null;
 };
 
+// ollama interface
+interface OllamaResponse {
+    response: string;
+    created_at?: string;
+    done?: boolean;
+}
+
+// get conversations response
+interface getConversationsContent{
+    conversationId: string;
+    messageId: string;
+    title: string;
+    conversationCreatedAt: Date;
+    sender: string;
+    content: string;
+}
+
 // api response
 interface ApiResponse<T = any>{
     success: boolean; 
@@ -32,13 +50,6 @@ interface ApiResponse<T = any>{
     data?: T; 
     errorMessage?: string;
 };
-
-// ollama interface
-interface OllamaResponse {
-    response: string;
-    created_at?: string;
-    done?: boolean;
-}
 
 
 // class
@@ -53,9 +64,9 @@ class InteractionController{
 
     // chat interaction =
     // 1. send msg to mistral 
-    // 2. save conversations
+    // 2. save conversations, with condition
     // 3. save messages
-    // 4. send: title chat + llm_response 
+    // 4. send: title chat + llm_response + conversationid
     async chatInteraction(
         req: Request<{}, {}, InterectRequest>,
         res: Response<ApiResponse<contentResponse>>
@@ -74,7 +85,7 @@ class InteractionController{
             if(!user_exist){
                 return res.status(404).send({
                     success: false,
-                    message: 'User email data not found'
+                    message: 'User data not found'
                 });
             }
 
@@ -107,7 +118,7 @@ class InteractionController{
             : llm_response.data.response;
                         
             // user message sended
-            await models.Messages.create({
+            await models.Message.create({
                 conversationId: conversation_id,
                 sender,
                 tokensUsed: text.length,
@@ -115,7 +126,7 @@ class InteractionController{
             });
             
             // llm's message sended
-            await models.Messages.create({
+            await models.Message.create({
                 conversationId: conversation_id,
                 sender: 'llm',
                 tokensUsed: result.length,
@@ -137,6 +148,81 @@ class InteractionController{
             });
         }
     };
+
+
+    // get conversations
+    async getConversations(
+        req: Request,
+        res: Response<ApiResponse<getConversationsContent[]>>
+    ){
+        const userId = req.params.userID;
+        if(!userId){
+            return res.status(400).send({
+                success: false,
+                message: 'Bad request at fields sended'
+            });
+        }
+
+        try{
+            // check user existence
+            const user_exist = await models.User.findByPk(userId);
+            if(!user_exist){
+                return res.status(404).send({
+                    success: false,
+                    message: 'User data not found'
+                });
+            }
+
+            // get conversations + messages
+            const conversations = await models.Conversation.findAll({
+                where: { userId },
+                attributes: [ 'id', 'title', 'createdAt' ],
+                include: [{
+                    model: models.Message,
+                    as: 'messages',
+                    attributes: [ 'id', 'sender', 'content' ]
+                }],
+                order: [
+                    [ 'createdAt', 'ASC' ], // conversation order - older to new
+                    [ { model: models.Message, as: 'messages' }, 'createdAt', 'ASC' ] // messages order
+                ]
+            });
+
+            // check conversations existence
+            if(conversations.length === 0){
+                return res.status(204).send({
+                    success: true,
+                    message: 'None conversations found'
+                });
+            }
+
+            // format response for <getConversationContent> interface
+            const formatResponse: getConversationsContent[] = conversations.flatMap(conv => { // "flatMap": maps each element and then flattens the result into a single level 1 array.
+                return (conv.messages || []).map(msg => ({
+                    conversationId: conv.id,
+                    messageId: msg.id,
+                    title: conv.title,
+                    conversationCreatedAt: conv.createdAt,
+                    sender: msg.sender,
+                    content: msg.content
+                } as getConversationsContent));
+            });
+
+            return res.status(200).send({
+                success: true,
+                message: 'Get conversations success',
+                data: formatResponse
+            });
+        }
+        catch(error: unknown){
+            console.error('Internal server error at Get conversations', error);
+            return res.status(500).send({
+                success: false,
+                message: 'Internal server error at Get conversations',
+                errorMessage: this.getErrorMessage(error)
+            });
+        }
+    }
 };
 
 

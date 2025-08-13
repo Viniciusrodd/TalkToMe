@@ -1,7 +1,7 @@
 // modules
 import app from './app';
 import connection from './database/connection/connection';
-import './database/relations';
+import models from './database/relations';
 
 
 // database connection

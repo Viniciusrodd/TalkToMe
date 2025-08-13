@@ -30,7 +30,7 @@ router.get('/user', verifyToken, UserController.getUser);
 
 // interections - backend port: 2140
 router.post('/chatInterection', verifyToken, InteractionController.chatInteraction);
-
+router.get('/conversations/:userID', verifyToken, InteractionController.getConversations);
 
 
 // export
