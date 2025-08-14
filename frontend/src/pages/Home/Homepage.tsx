@@ -35,7 +35,8 @@ const Homepage = () => {
 
     // messages
     interface Message{
-        sender: 'user' | 'llm';
+        messageId?: string;
+        sender: string;
         content: string;
     };
 
@@ -54,7 +55,7 @@ const Homepage = () => {
     // consts
     const navigate = useNavigate();
     const { userName, setUserName, userId, setUserId } = useContext(UserContext);
-    const { conversation, setConversation } = useContext(ConversationContext);
+    const { conversation, setConversation, conversationHistoric } = useContext(ConversationContext);
     const conversationContainerRef = useRef<HTMLDivElement>(null);
     const { loading, setLoading } = useContext(LoadingContext);
 
@@ -69,27 +70,6 @@ const Homepage = () => {
 
     // functions
 
-
-    // get user data + udpate user contexts
-    useEffect(() =>{
-        if(userName === '' && userId === ''){ 
-            const getUser = async () =>{
-                try{
-                    const res = await get_user_data();
-                    if(res.status === 200){
-                        // set context
-                        setUserId(res.data.data?.id || '');
-                        setUserName(res.data.data?.name || '');
-                    }
-                }
-                catch(error){
-                    console.log(error);
-                }
-            };
-            getUser();
-        }
-    }, [userName, setUserName, userId, setUserId]);
-    
 
     // modal config
     const modal_config = ({ title, msg, btt1, btt2, display }: IModalConfig) => {
@@ -112,6 +92,37 @@ const Homepage = () => {
             });
         }
     };
+
+    // get user data + udpate user contexts
+    useEffect(() =>{
+        if(userName === '' && userId === ''){ 
+            const getUser = async () =>{
+                try{
+                    const res = await get_user_data();
+                    if(res.status === 200){
+                        // set context
+                        setUserId(res.data.data?.id || '');
+                        setUserName(res.data.data?.name || '');
+                    }
+                }
+                catch(error){
+                    console.log(error);
+                }
+            };
+            getUser();
+        }
+    }, [userName, setUserName, userId, setUserId]);
+    
+    // get historic conversation id
+    useEffect(() =>{
+        if(conversationHistoric.length > 0){
+            console.log(conversationHistoric[0])
+
+            setConversationId(conversationHistoric[0].conversationId);
+            setTitleChat(conversationHistoric[0].title);
+            setMessages(conversationHistoric[0].messages);
+        }
+    }, [ conversationHistoric ]);    
 
     // send message icone
     useEffect(() =>{

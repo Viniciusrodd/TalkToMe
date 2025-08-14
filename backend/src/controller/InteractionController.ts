@@ -93,7 +93,7 @@ class InteractionController{
 
             // conversation_id access + title creation
             let conversation_id = conversationId;
-            const title = text.slice(0, 15) + '...' || text.slice(0, 5) + '...';
+            const title = text.slice(0, 25) + '...' || text.slice(0, 5) + '...';
             
             // check conversation existence
             if(!conversation_id){

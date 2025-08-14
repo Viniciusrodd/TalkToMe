@@ -30,7 +30,7 @@ const SideBar = () => {
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
 
     // consts
-    const { conversation, setConversation } = useContext(ConversationContext);
+    const { conversation, setConversation, setConversationHistoric } = useContext(ConversationContext);
     const { userId } = useContext(UserContext);
 
     // modal
@@ -85,10 +85,6 @@ const SideBar = () => {
     // get conversations
     const { conversations, errorResConv } = getConversations(userId);
     useEffect(() =>{
-        if(conversations.length > 0){
-            console.log(conversations);
-        }
-
         if(errorResConv){
             console.log('Error at get conversations in homepage: ', errorResConv);
             modal_config({
@@ -97,6 +93,16 @@ const SideBar = () => {
             });
         }
     }, [ conversations, errorResConv ]);
+
+    // historic conversation redirect
+    const historicConversationRedirect = (conversationId: string | undefined) =>{
+        if(conversationId !== ''){
+            const conversationFiltered = conversations.filter(conv => conv.conversationId === conversationId);
+
+            setConversation(true);
+            setConversationHistoric(conversationFiltered);
+        }
+    };
 
 
     // jsx
@@ -150,7 +156,9 @@ const SideBar = () => {
 
                         { conversations && conversations.map((conv) =>(
                             <Fragment key={ conv.conversationId }>
-                                <p>{ conv.title }</p>
+                                <p onClick={ () => historicConversationRedirect(conv.conversationId) }>
+                                    { conv.title }
+                                </p>
                             </Fragment>
                         )) }
                     </div>
