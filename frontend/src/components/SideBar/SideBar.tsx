@@ -3,24 +3,67 @@
 import styles from './SideBar.module.css';
 
 // hooks
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, Fragment } from 'react';
+import { getConversations } from '../../hooks/useGetConversations'; // custom hook
+
+// component
+import Modal from '../../components/Modal/Modal';
 
 // context
+import { UserContext } from '../../context/UserContext';
 import { ConversationContext } from '../../context/ConversationContext';
 
 
 // sidebar
 const SideBar = () => {
+    // interfaces
+    interface IModalConfig {
+        title: string;
+        msg: string;
+        btt1: boolean | string;
+        btt2: boolean | string;
+        display: boolean;
+    };
+
     // states
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
 
     // consts
     const { conversation, setConversation } = useContext(ConversationContext);
+    const { userId } = useContext(UserContext);
 
+    // modal
+    const [ modal_display, setModal_display ] = useState<boolean>(false);
+    const [ modal_title, setModal_title ] = useState<string>('');
+    const [ modal_msg, setModal_msg ] = useState<string>('');
+    const [ modal_btt, setmodal_btt ] = useState<boolean | string>(false);
+    const [ modal_btt_2, setModal_btt_2 ] = useState<boolean | string>(false);
 
     // functions
     
+
+    // modal config
+    const modal_config = ({ title, msg, btt1, btt2, display }: IModalConfig) => {
+        setModal_title(title ?? '');
+        setModal_msg(msg ?? '');
+        setmodal_btt(btt1 ?? false);
+        setModal_btt_2(btt2 ?? false);
+        setModal_display(display ?? false);
+
+        // The "??" (nullish coalescing operator) 
+        // returns the value on the right ONLY if the value on the left is null or undefined
+    };    
+    
+    // close modal
+    const closeModal = () =>{
+        if(modal_btt_2 !== false || modal_btt !== false){
+            modal_config({
+                title: '', msg: '', btt1: false, 
+                btt2: false, display: false
+            });
+        }
+    };
 
     // side open
     const side_open = () =>{
@@ -39,12 +82,39 @@ const SideBar = () => {
         if(conversation) setConversation(false);
     };
 
+    // get conversations
+    const { conversations, errorResConv } = getConversations(userId);
+    useEffect(() =>{
+        if(conversations.length > 0){
+            console.log(conversations);
+        }
+
+        if(errorResConv){
+            console.log('Error at get conversations in homepage: ', errorResConv);
+            modal_config({
+                title: 'Error ❗', msg: 'Internal erro at get conversations historic,\n please try again later!', 
+                btt1: false, btt2: 'Try again', display: true
+            });
+        }
+    }, [ conversations, errorResConv ]);
+
 
     // jsx
 
 
     return (
         <div className={ styles.sidebar_container }>
+            { /* modal */ }
+            <Modal 
+                title={ modal_title }
+                msg={ modal_msg }
+                btt1={ modal_btt }
+                btt2={ modal_btt_2 }
+                display={ modal_display }
+                onClose={ closeModal }
+                modalEvent={ closeModal }
+            />
+
             {
                 isOpen ? (
                     <>
@@ -78,30 +148,11 @@ const SideBar = () => {
                     <div className={ styles.scrollbar_div }>
                         <p className={ styles.chat_p }>Chats</p>
 
-                        <p>chat conversation 1</p>
-                        <p>chat conversation 2</p>
-                        <p>chat conversation 3</p>
-                        <p>chat conversation 4</p>
-                        <p>chat conversation 1</p>
-                        <p>chat conversation 2</p>
-                        <p>chat conversation 3</p>
-                        <p>chat conversation 4</p>
-                        <p>chat conversation 1</p>
-                        <p>chat conversation 2</p>
-                        <p>chat conversation 3</p>
-                        <p>chat conversation 4</p>
-                        <p>chat conversation 1</p>
-                        <p>chat conversation 2</p>
-                        <p>chat conversation 3</p>
-                        <p>chat conversation 4</p>                    
-                        <p>chat conversation 1</p>
-                        <p>chat conversation 2</p>
-                        <p>chat conversation 3</p>
-                        <p>chat conversation 4</p>
-                        <p>chat conversation 1</p>
-                        <p>chat conversation 2</p>
-                        <p>chat conversation 3</p>
-                        <p>chat conversation 4</p>
+                        { conversations && conversations.map((conv) =>(
+                            <Fragment key={ conv.conversationId }>
+                                <p>{ conv.title }</p>
+                            </Fragment>
+                        )) }
                     </div>
                     </>
                 ) : (

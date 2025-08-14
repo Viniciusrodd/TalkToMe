@@ -36,11 +36,13 @@ interface OllamaResponse {
 // get conversations response
 interface getConversationsContent{
     conversationId: string;
-    messageId: string;
     title: string;
     conversationCreatedAt: Date;
-    sender: string;
-    content: string;
+    messages: {
+        messageId: string;
+        sender: string;
+        content: string;
+    }[];
 }
 
 // api response
@@ -156,6 +158,7 @@ class InteractionController{
         res: Response<ApiResponse<getConversationsContent[]>>
     ){
         const userId = req.params.userID;
+
         if(!userId){
             return res.status(400).send({
                 success: false,
@@ -197,16 +200,16 @@ class InteractionController{
             }
 
             // format response for <getConversationContent> interface
-            const formatResponse: getConversationsContent[] = conversations.flatMap(conv => { // "flatMap": maps each element and then flattens the result into a single level 1 array.
-                return (conv.messages || []).map(msg => ({
-                    conversationId: conv.id,
+            const formatResponse = conversations.map(conv =>({
+                conversationId: conv.id,
+                title: conv.title,
+                conversationCreatedAt: conv.createdAt,
+                messages: (conv.messages || []).map(msg => ({
                     messageId: msg.id,
-                    title: conv.title,
-                    conversationCreatedAt: conv.createdAt,
                     sender: msg.sender,
                     content: msg.content
-                } as getConversationsContent));
-            });
+                }))
+            }));
 
             return res.status(200).send({
                 success: true,
