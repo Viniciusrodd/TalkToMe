@@ -8,6 +8,12 @@ interface IchatRequestData{
     userId: string;
     sender: string;
     conversationId: string | null;
+    file: {
+        name: string;
+        type: string;
+        size: number;
+        content: string | null;
+    } | null;
 };
 
 // api response interface

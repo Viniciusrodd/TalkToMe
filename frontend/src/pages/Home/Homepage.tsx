@@ -116,8 +116,6 @@ const Homepage = () => {
     // get historic conversation id
     useEffect(() =>{
         if(conversationHistoric.length > 0){
-            console.log(conversationHistoric[0])
-
             setConversationId(conversationHistoric[0].conversationId);
             setTitleChat(conversationHistoric[0].title);
             setMessages(conversationHistoric[0].messages);
@@ -187,9 +185,35 @@ const Homepage = () => {
             setFile(e.target.files[0]);
         }
     };
-    useEffect(() =>{
+    /*useEffect(() =>{
         if(file !== null) console.log(file)
-    }, [file]);
+    }, [file]);*/
+
+    // read file function
+    const readFileContent = (file: File): Promise<string> =>{
+        return new Promise((resolve, reject) =>{
+            const reader = new FileReader();
+
+            reader.onload = (event) =>{
+                if(event.target?.result){
+                    resolve(event.target.result.toString());
+                }else{
+                    reject(new Error('Failed to read file'));
+                }
+            };
+
+            reader.onerror = (error) =>{
+                reject(error);
+            };
+
+            // read file as (text) or (64base) for binaries
+            if(file.type.match('text.*') || ['.txt', '.csv', '.json', '.xml', '.md', '.py', '.js', '.html', '.css', '.sql'].some(ext => file.name.endsWith(ext))){
+                reader.readAsText(file);
+            }else{
+                reader.readAsDataURL(file); // for binaries files like PDF, DOCX, ...
+            }
+        })
+    };
 
     // send message
     const send_message = async () =>{
@@ -198,6 +222,7 @@ const Homepage = () => {
                 title: 'Wait ❗', msg: 'Please, ask something...', btt1: false, 
                 btt2: 'Write a message', display: true
             });
+            return;
         }
 
         // start conversation
@@ -208,13 +233,25 @@ const Homepage = () => {
 
         try{
             setLoading(true);            
-            
+        
+            // set file
+            let fileContent = null;
+            if(file){
+                fileContent = await readFileContent(file);
+            }            
+
             // message data
             const data = {
                 text: messageValue,
                 userId,
                 sender: 'user',
-                conversationId
+                conversationId,
+                file: file ? {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    content: fileContent
+                } : null
             };
             
             const res = await chat_interaction(data);
