@@ -7,7 +7,10 @@ import axios from 'axios';
 
 // express
 import { Request, Response } from 'express';
-import Conversation from "../database/models/ConversationModel";
+
+// utils
+import { formatFileSize } from "../utils/filesUtil";
+import { extractRelevantContent } from "../utils/filesUtil";
 
 
 // interect request
@@ -16,6 +19,12 @@ interface InterectRequest{
     userId: string;
     sender: string;
     conversationId: string | null;
+    file: {
+        name: string;
+        type: string;
+        size: number;
+        content: string | null;
+    } | null;
 };
 
 // content response
@@ -73,11 +82,18 @@ class InteractionController{
         req: Request<{}, {}, InterectRequest>,
         res: Response<ApiResponse<contentResponse>>
     ){
-        const { text, userId, sender, conversationId } = req.body;
+        const { text, userId, sender, conversationId, file } = req.body;
         if(!text || !userId || !sender){
             return res.status(400).send({
                 success: false,
                 message: 'Bad request at fields sended'
+            });
+        }
+
+        if(file && file.size > 5 * 1024 * 1024){ // 5MB
+            return res.status(400).send({
+                success: false,
+                message: 'Big file error (limit: 5MB)'
             });
         }
 
@@ -107,19 +123,32 @@ class InteractionController{
             // llm prompt
             const prompt = `Please respond in simple, clear English. 
             Keep answers concise (at maximum 1000 token for be more clear), 
-            and avoid complex jargon. Text request: ${text}`;
+            and avoid complex jargon. Text request: ${text}.`;
+
+            // llm prompt (with file)
+            const promptWithFile = file ? 
+                `Please respond in simple, clear English. 
+                Keep answers concise (at maximum 1000 token for be more clear), 
+                and avoid complex jargon. Give the answer with a file name, type, size and content
+                before the answer... 
+                - Text request: ${text}.
+                - File request: ${file?.name}
+                - File type: ${file?.type}
+                - File size: ${formatFileSize(file.size)}
+                - Relevant content: ${file.content ? extractRelevantContent(file.content) : 'No content to extract'}` 
+            : prompt;
 
             // llm request
             const llm_response = await axios.post<OllamaResponse>('http://localhost:11434/api/generate', {
                 'model': 'mistral', 
-                'prompt': prompt,
+                'prompt': file ? promptWithFile : prompt,
                 'stream': false
             });
             const result = typeof llm_response.data === 'string' 
             ? llm_response.data 
             : llm_response.data.response;
                         
-            // user message sended
+            // user message sended - save
             await models.Message.create({
                 conversationId: conversation_id,
                 sender,
@@ -127,7 +156,7 @@ class InteractionController{
                 content: text
             });
             
-            // llm's message sended
+            // llm's message sended - save
             await models.Message.create({
                 conversationId: conversation_id,
                 sender: 'llm',

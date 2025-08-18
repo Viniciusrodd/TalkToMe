@@ -270,6 +270,9 @@ const Homepage = () => {
                     sender: 'llm',
                     content: res.data.data?.llm_result || ''
                 }]);
+
+                // set file
+                if(file) setFile(null);
             }
         }
         catch(error){
