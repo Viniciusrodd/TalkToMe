@@ -115,7 +115,7 @@ const SideBar = () => {
     // send chat search 
     const send_search = () =>{
         if(searchValue !== '') console.log('search value: ', searchValue);
-        
+
         setSearchValue('');
     };
 

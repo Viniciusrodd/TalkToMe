@@ -187,11 +187,10 @@ class InteractionController{
         res: Response<ApiResponse<getConversationsContent[]>>
     ){
         const userId = req.params.userID;
-
         if(!userId){
             return res.status(400).send({
                 success: false,
-                message: 'Bad request at fields sended'
+                message: 'Bad request at params sended'
             });
         }
 
@@ -251,6 +250,81 @@ class InteractionController{
             return res.status(500).send({
                 success: false,
                 message: 'Internal server error at Get conversations',
+                errorMessage: this.getErrorMessage(error)
+            });
+        }
+    }
+
+
+    // search for conversation
+    async searchConversation(
+        req: Request,
+        res: Response<ApiResponse<getConversationsContent>>
+    ){
+        const { userID, title } = req.params;
+        if(!userID || !title){
+            return res.status(400).send({
+                success: false,
+                message: 'Bad request at params sended'
+            });
+        }
+
+        try{
+            // user existence check
+            const user_exist = await models.User.findByPk(userID);
+            if(!user_exist){
+                return res.status(404).send({
+                    success: false,
+                    message: 'User data not found'
+                });
+            }
+
+            // conversation existence check
+            let conversation_id;
+            const conversation = await models.Conversation.findOne({ 
+                where: { 
+                    title: { [Op.like]: `%${title}%` } 
+                }
+            });
+            if(!conversation){
+                return res.status(204).send({
+                    success: true,
+                    message: 'Conversation not found'
+                });
+            }
+            conversation_id = conversation.id
+
+            // get messages from conversation
+            const messages = await models.Message.findAll({
+                where: { conversationId: conversation_id },
+                order: [
+                    [ 'createdAt', 'ASC' ]
+                ]
+            });
+
+            // format response
+            const formatResponse = {
+                conversationId: conversation.id,
+                title: conversation.title,
+                conversationCreatedAt: conversation.createdAt,
+                messages: (messages || []).map(msg => ({
+                    messageId: msg.id,
+                    sender: msg.sender,
+                    content: msg.content
+                }))
+            };
+
+            return res.status(200).send({
+                success: true,
+                message: 'Conversation searched found with success',
+                data: formatResponse
+            });
+        }
+        catch(error: unknown){
+            console.error('Internal server error at Search conversation', error);
+            return res.status(500).send({
+                success: false,
+                message: 'Internal server error at Search conversation',
                 errorMessage: this.getErrorMessage(error)
             });
         }
