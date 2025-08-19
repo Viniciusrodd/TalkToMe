@@ -3,7 +3,7 @@
 import styles from './SideBar.module.css';
 
 // hooks
-import { useState, useContext, useEffect, Fragment } from 'react';
+import React, { useState, useContext, useEffect, Fragment, useRef } from 'react';
 import { getConversations } from '../../hooks/useGetConversations'; // custom hook
 
 // component
@@ -28,10 +28,12 @@ const SideBar = () => {
     // states
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
+    const [ searchValue, setSearchValue ] = useState<string>('');
 
     // consts
     const { conversation, setConversation, setConversationHistoric } = useContext(ConversationContext);
     const { userId } = useContext(UserContext);
+    const search_ref = useRef<HTMLInputElement>(null);
 
     // modal
     const [ modal_display, setModal_display ] = useState<boolean>(false);
@@ -39,6 +41,7 @@ const SideBar = () => {
     const [ modal_msg, setModal_msg ] = useState<string>('');
     const [ modal_btt, setmodal_btt ] = useState<boolean | string>(false);
     const [ modal_btt_2, setModal_btt_2 ] = useState<boolean | string>(false);
+
 
     // functions
     
@@ -77,6 +80,11 @@ const SideBar = () => {
         setIsOpen(!isOpen);
     };
 
+    // search focus
+    useEffect(() =>{
+        search_ref.current?.focus();
+    }, [ isSearching ]);
+
     // new conversation
     const new_conversation = () =>{
         if(conversation) setConversation(false);
@@ -102,6 +110,13 @@ const SideBar = () => {
             setConversation(true);
             setConversationHistoric(conversationFiltered);
         }
+    };
+
+    // send chat search 
+    const send_search = () =>{
+        if(searchValue !== '') console.log('search value: ', searchValue);
+        
+        setSearchValue('');
     };
 
 
@@ -130,10 +145,12 @@ const SideBar = () => {
                         </li>
                         {
                             isSearching ? (
-                                <li>
+                                <li className={ styles.search_li }>
                                     <span className="material-symbols-outlined">search</span>
-                                    <input type="text" name="" placeholder='Search for chats...' />
-                                    <button type='submit'>
+                                    <input type="text" name="" placeholder='Search for chats...' 
+                                    ref={ search_ref } value={ searchValue } 
+                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value) } />
+                                    <button type='submit' onClick={ send_search }>
                                         Search
                                     </button>
                                 </li>
@@ -168,18 +185,11 @@ const SideBar = () => {
                         <li onClick={ side_open }>
                             <span className="material-symbols-outlined">dock_to_right</span>
                         </li>
-                        {
-                            isSearching ? (
-                                <li>
-                                    <span className="material-symbols-outlined">search</span>
-                                    <input type="text" name="" placeholder='Search...' />
-                                </li>
-                            ) : (
-                                <li onClick={ search_chat }>
-                                    <span className="material-symbols-outlined">search</span>
-                                </li>
-                            )
-                        }
+
+                        <li onClick={ search_chat }>
+                            <span className="material-symbols-outlined">search</span>
+                        </li>
+
                         <li onClick={ new_conversation }>
                             <span className="material-symbols-outlined">chat_add_on</span>
                         </li>

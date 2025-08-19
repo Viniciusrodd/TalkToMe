@@ -254,6 +254,7 @@ const Homepage = () => {
                 } : null
             };
             
+            // service call
             const res = await chat_interaction(data);
             setLoading(false);
             
@@ -406,13 +407,13 @@ const Homepage = () => {
 
                         { showSendIcon ? (
                             <button onClick={ send_message } type='button' className={ styles.utils }>
-                                <span className={`material-symbols-outlined ${styles.is_send}`}>
-                                    send
+                                <span className={`material-symbols-outlined`}>
+                                    arrow_upward
                                 </span>
                             </button>
                         ) : (
                             <button type='button' className={ styles.utils }>
-                                <span className="material-symbols-outlined">mic</span>
+                                <span className="material-symbols-outlined">edit</span>
                             </button>
                         ) }
                     </div>

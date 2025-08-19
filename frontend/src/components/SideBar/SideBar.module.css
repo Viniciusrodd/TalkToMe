@@ -76,6 +76,11 @@
         width: 5vw;
         transition: all ease-in-out 0.5s;
 
+        & .search_li:hover{
+            background-color: transparent;
+            transform: none;
+        }
+
         & li{
             display: flex;
             padding: 10px;
@@ -104,10 +109,10 @@
                 font-weight: 500;
                 cursor: pointer;
                 background-color: #199BE2;
-                transition: all 0.5s;
+                transition: all 0.2s;
             }
             & button:hover{
-                background-color: #1389c8;
+                transform: scale(1.05);
             }
         }
         & li:hover{
