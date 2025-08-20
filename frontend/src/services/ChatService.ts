@@ -25,7 +25,7 @@ interface ApiResponse{
 };
 
 // search response
-interface SearchRespose{
+interface SearchResponse{
     success: boolean; 
     message: string; 
     data?: { 
@@ -68,7 +68,7 @@ export const chat_interaction = async (data: IchatRequestData): Promise<AxiosRes
 
 
 // search for chat
-export const search_chat = async (userID: string, title: string): Promise<AxiosResponse<SearchRespose>> => {
+export const search_chat_service = async (userID: string, title: string): Promise<AxiosResponse<SearchResponse>> => {
     try{
         const response = await axios.get(
             `http://localhost:2140/conversation/${userID}/${title}`,

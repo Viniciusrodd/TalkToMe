@@ -13,6 +13,9 @@ import Modal from '../../components/Modal/Modal';
 import { UserContext } from '../../context/UserContext';
 import { ConversationContext } from '../../context/ConversationContext';
 
+// service
+import { search_chat_service } from '../../services/ChatService';
+
 
 // sidebar
 const SideBar = () => {
@@ -25,10 +28,23 @@ const SideBar = () => {
         display: boolean;
     };
 
+    interface chat{
+        conversationId: string;
+        title: string;
+        conversationCreatedAt: Date;
+        messages: {
+            messageId: string;
+            sender: string;
+            content: string;
+        }[];
+    }
+
+
     // states
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
     const [ searchValue, setSearchValue ] = useState<string>('');
+    const [ searchChat_find, setSearchChat_find ] = useState<chat | undefined>(undefined);
 
     // consts
     const { conversation, setConversation, setConversationHistoric } = useContext(ConversationContext);
@@ -94,9 +110,9 @@ const SideBar = () => {
     const { conversations, errorResConv } = getConversations(userId);
     useEffect(() =>{
         if(errorResConv){
-            console.log('Error at get conversations in homepage: ', errorResConv);
+            console.log('Error at get conversations historic: ', errorResConv);
             modal_config({
-                title: 'Error ❗', msg: 'Internal erro at get conversations historic,\n please try again later!', 
+                title: 'Error ❗', msg: 'Internal error at get conversations historic,\n please try again later!', 
                 btt1: false, btt2: 'Try again', display: true
             });
         }
@@ -109,14 +125,26 @@ const SideBar = () => {
 
             setConversation(true);
             setConversationHistoric(conversationFiltered);
+            setSearchChat_find(undefined);
         }
     };
 
     // send chat search 
-    const send_search = () =>{
-        if(searchValue !== '') console.log('search value: ', searchValue);
-
-        setSearchValue('');
+    const send_search = async () =>{
+        try{
+            const res = await search_chat_service(userId, searchValue);
+            if(res.status === 200 && res.data.data){
+                setSearchChat_find(res.data.data);
+                setSearchValue('');
+            }
+        }
+        catch(error){
+            console.log('Error at send search chat: ', errorResConv);
+            modal_config({
+                title: 'Error ❗', msg: 'Internal error at send search chat,\n please try again later!', 
+                btt1: false, btt2: 'Try again', display: true
+            });
+        };
     };
 
 
@@ -171,7 +199,15 @@ const SideBar = () => {
                     <div className={ styles.scrollbar_div }>
                         <p className={ styles.chat_p }>Chats</p>
 
-                        { conversations && conversations.map((conv) =>(
+                        { searchChat_find && (
+                            <Fragment key={ searchChat_find.conversationId }>
+                                <p onClick={ () => historicConversationRedirect(searchChat_find.conversationId) }>
+                                    { searchChat_find.title }
+                                </p>
+                            </Fragment>
+                        ) }
+
+                        { !searchChat_find && conversations && conversations.map((conv) =>(
                             <Fragment key={ conv.conversationId }>
                                 <p onClick={ () => historicConversationRedirect(conv.conversationId) }>
                                     { conv.title }
