@@ -24,12 +24,29 @@ interface ApiResponse{
     error?: string;
 };
 
+// search response
+interface SearchRespose{
+    success: boolean; 
+    message: string; 
+    data?: { 
+        conversationId: string;
+        title: string;
+        conversationCreatedAt: Date;
+        messages: {
+            messageId: string;
+            sender: string;
+            content: string;
+        }[];
+    }; 
+    error?: string;
+}
+
 
 //// services
 
 
 // get llm response + chat title
-export const chat_interaction = async (data: IchatRequestData): Promise< AxiosResponse<ApiResponse> > =>{
+export const chat_interaction = async (data: IchatRequestData): Promise<AxiosResponse<ApiResponse>> =>{
     try{
         const response = await axios.post(
             'http://localhost:2140/chatInterection', 
@@ -46,5 +63,27 @@ export const chat_interaction = async (data: IchatRequestData): Promise< AxiosRe
             throw new Error(errorMessage);   
         }
         throw new Error('unknown chat interaction fail');
+    }
+};
+
+
+// search for chat
+export const search_chat = async (userID: string, title: string): Promise<AxiosResponse<SearchRespose>> => {
+    try{
+        const response = await axios.get(
+            `http://localhost:2140/conversation/${userID}/${title}`,
+            { withCredentials: true }
+        );
+        return response;      
+    }
+    catch(error){
+        if(axios.isAxiosError(error)){
+            const errorMessage = error.response?.data?.message || error.message;
+            console.error('search chat failed: ', errorMessage);
+
+            // repass the error for component
+            throw new Error(errorMessage);   
+        }
+        throw new Error('unknown search chat fail');
     }
 };
