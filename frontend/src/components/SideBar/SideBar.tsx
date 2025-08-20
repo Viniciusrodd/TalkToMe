@@ -45,6 +45,7 @@ const SideBar = () => {
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
     const [ searchValue, setSearchValue ] = useState<string>('');
     const [ searchChat_find, setSearchChat_find ] = useState<chat | undefined>(undefined);
+    const [ search_notfound, setSearch_notfound ] = useState<string | boolean>(false);
 
     // consts
     const { conversation, setConversation, setConversationHistoric } = useContext(ConversationContext);
@@ -137,6 +138,13 @@ const SideBar = () => {
                 setSearchChat_find(res.data.data);
                 setSearchValue('');
             }
+            if(res.status === 204){
+                setSearch_notfound('Chat not found...');
+                setTimeout(() => {
+                    setSearchValue('');
+                    setSearch_notfound(false);
+                }, 3000);
+            }
         }
         catch(error){
             console.log('Error at send search chat: ', errorResConv);
@@ -198,6 +206,9 @@ const SideBar = () => {
                     <hr />
                     <div className={ styles.scrollbar_div }>
                         <p className={ styles.chat_p }>Chats</p>
+                        { search_notfound && (
+                            <p>{ search_notfound }</p>                            
+                        ) }
 
                         { searchChat_find && (
                             <Fragment key={ searchChat_find.conversationId }>
@@ -207,7 +218,7 @@ const SideBar = () => {
                             </Fragment>
                         ) }
 
-                        { !searchChat_find && conversations && conversations.map((conv) =>(
+                        { !searchChat_find && !search_notfound && conversations && conversations.map((conv) =>(
                             <Fragment key={ conv.conversationId }>
                                 <p onClick={ () => historicConversationRedirect(conv.conversationId) }>
                                     { conv.title }
