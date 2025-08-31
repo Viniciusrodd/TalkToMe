@@ -162,6 +162,11 @@ const SideBar = () => {
         setSearch_notfound(false);
     };
 
+    // exit user
+    const exit = () =>{
+        
+    };
+
 
     // jsx
 
@@ -253,6 +258,10 @@ const SideBar = () => {
 
                         <li onClick={ new_conversation }>
                             <span className="material-symbols-outlined">chat_add_on</span>
+                        </li>
+
+                        <li className={ styles.exit_li } onClick={ exit }>
+                            <span className="material-symbols-outlined">exit_to_app</span>
                         </li>
                     </ul>
                 )

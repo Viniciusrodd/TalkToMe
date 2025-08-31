@@ -19,6 +19,9 @@ if (!secretToken){ // force verification
 // express
 import { Request, Response } from 'express';
 
+// services
+import { logOutService } from "../services/logOut";
+
 
 // user register request
 interface UserRegisterRequest{
@@ -235,6 +238,29 @@ class UserController{
             });
         }
     };
+
+
+    // logout
+    async logOut(
+        res: Response<ApiResponse>
+    ){
+        try{
+            // clear token
+            await logOutService(res);
+            return res.status(200).send({
+                success: true,
+                message: 'User logOut successfully'
+            });
+        }
+        catch(error: unknown){
+            console.error('Internal error server at logOut: ', error);
+            return res.status(500).send({
+                success: false,
+                message: 'Internal error server at logOut',
+                errorMessage: this.getErrorMessage(error)
+            });
+        }
+    }
 };
 
 

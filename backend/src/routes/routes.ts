@@ -26,6 +26,7 @@ router.get('/verifyToken', verifyToken, (req: Request, res: Response) =>{
 router.post('/register', validations.user_register_validation(), validate, UserController.registerUser);
 router.post('/login', validations.user_login_validation(), validate, UserController.login);
 router.get('/user', verifyToken, UserController.getUser);
+router.get('/logOut', verifyToken, UserController.logOut);
 
 
 // interections - backend port: 2140

@@ -81,6 +81,13 @@
             transform: none;
         }
 
+        & .exit_li{
+            margin-top: 450px;
+        }
+        & .exit_li:hover{
+            background-color: rgb(255, 87, 87);
+        }
+
         & li{
             display: flex;
             padding: 10px;
