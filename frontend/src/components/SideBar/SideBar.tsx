@@ -155,23 +155,30 @@ const SideBar = () => {
         };
     };
 
+    // reset chats
+    const reset_chats = () =>{
+        setSearchChat_find(undefined);
+        setSearch_notfound(false);
+    };
+
 
     // jsx
 
 
     return (
-        <div className={ styles.sidebar_container }>
-            { /* modal */ }
-            <Modal 
-                title={ modal_title }
-                msg={ modal_msg }
-                btt1={ modal_btt }
-                btt2={ modal_btt_2 }
-                display={ modal_display }
-                onClose={ closeModal }
-                modalEvent={ closeModal }
-            />
+        <>
+        { /* modal */ }
+        <Modal 
+            title={ modal_title }
+            msg={ modal_msg }
+            btt1={ modal_btt }
+            btt2={ modal_btt_2 }
+            display={ modal_display }
+            onClose={ closeModal }
+            modalEvent={ closeModal }
+        />
 
+        <div className={ styles.sidebar_container }>
             {
                 isOpen ? (
                     <>
@@ -211,11 +218,18 @@ const SideBar = () => {
                         ) }
 
                         { searchChat_find && (
+                            <>
+                            <button type='button' className={ styles.reset_btt }
+                            onClick={ reset_chats }>
+                                reset
+                            </button>
+
                             <Fragment key={ searchChat_find.conversationId }>
                                 <p onClick={ () => historicConversationRedirect(searchChat_find.conversationId) }>
                                     { searchChat_find.title }
                                 </p>
                             </Fragment>
+                            </>
                         ) }
 
                         { !searchChat_find && !search_notfound && conversations && conversations.map((conv) =>(
@@ -244,6 +258,7 @@ const SideBar = () => {
                 )
             }
         </div>
+        </>
     );
 };
 

@@ -128,3 +128,20 @@
         transition: all ease-in-out 0.5s;
     }
 }
+
+.reset_btt{
+    width: 100px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: transparent;
+    border: 3px solid #199BE2;
+    transition: all 0.2s;
+}
+.reset_btt:hover{
+    transform: scale(1.05);
+}
