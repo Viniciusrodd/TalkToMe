@@ -18,6 +18,7 @@ interface iGetConversations{
         messageId: string;
         sender: string;
         content: string;
+        createdAt: Date;
     }[];
 }
 

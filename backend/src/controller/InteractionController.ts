@@ -51,6 +51,7 @@ interface getConversationsContent{
         messageId: string;
         sender: string;
         content: string;
+        createdAt: Date
     }[];
 };
 
@@ -153,7 +154,8 @@ class InteractionController{
                 conversationId: conversation_id,
                 sender,
                 tokensUsed: text.length,
-                content: text
+                content: text,
+                createdAt: new Date()
             });
             
             // llm's message sended - save
@@ -161,7 +163,8 @@ class InteractionController{
                 conversationId: conversation_id,
                 sender: 'llm',
                 tokensUsed: result.length,
-                content: result
+                content: result,
+                createdAt: new Date()
             });
 
             return res.status(200).send({
@@ -211,7 +214,7 @@ class InteractionController{
                 include: [{
                     model: models.Message,
                     as: 'messages',
-                    attributes: [ 'id', 'sender', 'content' ]
+                    attributes: [ 'id', 'sender', 'content', 'createdAt' ]
                 }],
                 order: [
                     [ 'createdAt', 'ASC' ], // conversation order - older to new
@@ -235,7 +238,8 @@ class InteractionController{
                 messages: (conv.messages || []).map(msg => ({
                     messageId: msg.id,
                     sender: msg.sender,
-                    content: msg.content
+                    content: msg.content,
+                    createdAt: msg.createdAt
                 }))
             }));
 
@@ -319,7 +323,8 @@ class InteractionController{
                     messages: conversationMessages.map(msg => ({
                         messageId: msg.id,
                         sender: msg.sender,
-                        content: msg.content
+                        content: msg.content,
+                        createdAt: msg.createdAt
                     }))
                 };
             });

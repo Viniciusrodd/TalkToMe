@@ -290,6 +290,11 @@ const Homepage = () => {
         // clear message
         setMesageValue('');
     };
+    useEffect(() =>{
+        if(messages.length > 0){
+            console.log(messages)
+        }
+    }, [messages]);
 
     // clear on conversation desactive
     useEffect(() =>{
