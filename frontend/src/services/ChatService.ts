@@ -37,7 +37,7 @@ interface SearchResponse{
             sender: string;
             content: string;
         }[];
-    }; 
+    }[]; 
     error?: string;
 }
 

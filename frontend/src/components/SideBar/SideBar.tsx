@@ -44,7 +44,7 @@ const SideBar = () => {
     const [ isOpen, setIsOpen ] = useState<boolean>(false);
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
     const [ searchValue, setSearchValue ] = useState<string>('');
-    const [ searchChat_find, setSearchChat_find ] = useState<chat | undefined>(undefined);
+    const [ searchChat_find, setSearchChat_find ] = useState<chat[]>([]);
     const [ search_notfound, setSearch_notfound ] = useState<string | boolean>(false);
 
     // consts
@@ -126,7 +126,7 @@ const SideBar = () => {
 
             setConversation(true);
             setConversationHistoric(conversationFiltered);
-            setSearchChat_find(undefined);
+            setSearchChat_find([]);
         }
     };
 
@@ -134,6 +134,7 @@ const SideBar = () => {
     const send_search = async () =>{
         try{
             const res = await search_chat_service(userId, searchValue);
+        
             if(res.status === 200 && res.data.data){
                 setSearchChat_find(res.data.data);
                 setSearchValue('');
@@ -157,7 +158,7 @@ const SideBar = () => {
 
     // reset chats
     const reset_chats = () =>{
-        setSearchChat_find(undefined);
+        setSearchChat_find([]);
         setSearch_notfound(false);
     };
 
@@ -217,22 +218,21 @@ const SideBar = () => {
                             <p>{ search_notfound }</p>                            
                         ) }
 
-                        { searchChat_find && (
-                            <>
+                        { searchChat_find.length > 0 && (
                             <button type='button' className={ styles.reset_btt }
                             onClick={ reset_chats }>
                                 reset
                             </button>
-
-                            <Fragment key={ searchChat_find.conversationId }>
-                                <p onClick={ () => historicConversationRedirect(searchChat_find.conversationId) }>
-                                    { searchChat_find.title }
+                        ) }
+                        { searchChat_find.length > 0 && searchChat_find.map(chat =>(
+                            <Fragment key={ chat.conversationId }>
+                                <p onClick={ () => historicConversationRedirect(chat.conversationId) }>
+                                    { chat.title }
                                 </p>
                             </Fragment>
-                            </>
-                        ) }
+                        ))}
 
-                        { !searchChat_find && !search_notfound && conversations && conversations.map((conv) =>(
+                        { searchChat_find.length === 0 && !search_notfound && conversations && conversations.map((conv) =>(
                             <Fragment key={ conv.conversationId }>
                                 <p onClick={ () => historicConversationRedirect(conv.conversationId) }>
                                     { conv.title }

@@ -52,7 +52,7 @@ interface getConversationsContent{
         sender: string;
         content: string;
     }[];
-}
+};
 
 // api response
 interface ApiResponse<T = any>{
@@ -259,7 +259,7 @@ class InteractionController{
     // search for conversation
     async searchConversation(
         req: Request,
-        res: Response<ApiResponse<getConversationsContent>>
+        res: Response<ApiResponse<getConversationsContent[]>>
     ){
         const { userID, title } = req.params;
         if(!userID || !title){
@@ -280,39 +280,49 @@ class InteractionController{
             }
 
             // conversation existence check
-            let conversation_id;
-            const conversation = await models.Conversation.findOne({ 
+            let conversation_id = [];
+            const conversation = await models.Conversation.findAll({ 
                 where: { 
                     title: { [Op.like]: `%${title}%` } 
                 }
             });
-            if(!conversation){
+            if(!conversation || conversation.length === 0){
                 return res.status(204).send({
                     success: true,
                     message: 'Conversation not found'
                 });
             }
-            conversation_id = conversation.id
+
+            // set conversations id
+            conversation_id = conversation.map(conv => conv.id);
 
             // get messages from conversation
             const messages = await models.Message.findAll({
-                where: { conversationId: conversation_id },
+                where: { 
+                    conversationId: {
+                        [Op.in]: conversation_id
+                    } 
+                },
                 order: [
                     [ 'createdAt', 'ASC' ]
                 ]
             });
 
-            // format response
-            const formatResponse = {
-                conversationId: conversation.id,
-                title: conversation.title,
-                conversationCreatedAt: conversation.createdAt,
-                messages: (messages || []).map(msg => ({
-                    messageId: msg.id,
-                    sender: msg.sender,
-                    content: msg.content
-                }))
-            };
+            // format response    
+            const formatResponse = conversation.map(conv => {
+                const conversationMessages = messages.filter(msg => msg.conversationId === conv.id);
+                
+                return {
+                    conversationId: conv.id,
+                    title: conv.title,
+                    conversationCreatedAt: conv.createdAt,
+                    messages: conversationMessages.map(msg => ({
+                        messageId: msg.id,
+                        sender: msg.sender,
+                        content: msg.content
+                    }))
+                };
+            });
 
             return res.status(200).send({
                 success: true,
