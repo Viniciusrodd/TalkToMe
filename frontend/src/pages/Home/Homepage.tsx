@@ -93,6 +93,37 @@ const Homepage = () => {
         }
     };
 
+    // login redirect + clear message
+    useEffect(() =>{
+        if(loginRedirect){
+            const timeout = setTimeout(() => {
+                modal_config({
+                    title: '', msg: '', btt1: false, 
+                    btt2: false, display: false
+                });  
+
+                navigate('/login');
+            }, 3000);
+
+            return () =>{
+                clearTimeout(timeout);
+            };
+        }
+
+        if(clearMessage){
+            const timeout = setTimeout(() => {
+                modal_config({
+                    title: '', msg: '', btt1: false, 
+                    btt2: false, display: false
+                });  
+            }, 3000);
+
+            return () =>{
+                clearTimeout(timeout);
+            };
+        }
+    }, [loginRedirect, clearMessage]);
+
     // get user data + udpate user contexts
     useEffect(() =>{
         if(userName === '' && userId === ''){ 
@@ -126,37 +157,6 @@ const Homepage = () => {
     useEffect(() =>{
         setShowSendIcon(messageValue.trim() !== '');
     }, [messageValue]);
-
-    // login redirect + clear message
-    useEffect(() =>{
-        if(loginRedirect){
-            const timeout = setTimeout(() => {
-                modal_config({
-                    title: '', msg: '', btt1: false, 
-                    btt2: false, display: false
-                });  
-
-                navigate('/login');
-            }, 3000);
-
-            return () =>{
-                clearTimeout(timeout);
-            };
-        }
-
-        if(clearMessage){
-            const timeout = setTimeout(() => {
-                modal_config({
-                    title: '', msg: '', btt1: false, 
-                    btt2: false, display: false
-                });  
-            }, 3000);
-
-            return () =>{
-                clearTimeout(timeout);
-            };
-        }
-    }, [loginRedirect, clearMessage]);
 
     // verify token
     const { status, errorRes } = verifyToken();

@@ -5,8 +5,8 @@ import { Response } from "express";
 
 
 // logout function
-export const logOutService = async (res: Response) =>{
-    return res.clearCookie('token', {
+export const logOutService = (res: Response) =>{
+    res.clearCookie('token', {
         httpOnly: true,
         sameSite: 'strict'
     });

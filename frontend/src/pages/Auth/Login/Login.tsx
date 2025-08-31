@@ -122,8 +122,6 @@ const Login = () => {
         try{
             const res = await user_login(formData);
             if(res.status === 200){
-                console.log('User login successfully', res.data);
-                
                 // set name context
                 if(userName === ''){
                     res.data.data?.name ? setUserName(res.data.data?.name) : setUserName('');
@@ -136,9 +134,6 @@ const Login = () => {
                 setRedirectHomepage(true);
 
                 setLoading(false);
-                // clean states
-                //setFormData({ email: '', password: '' });
-                //setConfirmPassword('');
             }
         }
         catch(error){

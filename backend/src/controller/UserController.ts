@@ -242,11 +242,12 @@ class UserController{
 
     // logout
     async logOut(
+        req: Request,
         res: Response<ApiResponse>
     ){
         try{
             // clear token
-            await logOutService(res);
+            logOutService(res);
             return res.status(200).send({
                 success: true,
                 message: 'User logOut successfully'

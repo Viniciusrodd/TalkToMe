@@ -4,6 +4,7 @@ import styles from './SideBar.module.css';
 
 // hooks
 import React, { useState, useContext, useEffect, Fragment, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getConversations } from '../../hooks/useGetConversations'; // custom hook
 
 // component
@@ -15,6 +16,7 @@ import { ConversationContext } from '../../context/ConversationContext';
 
 // service
 import { search_chat_service } from '../../services/ChatService';
+import { user_logOut } from '../../services/AuthService';
 
 
 // sidebar
@@ -46,11 +48,13 @@ const SideBar = () => {
     const [ searchValue, setSearchValue ] = useState<string>('');
     const [ searchChat_find, setSearchChat_find ] = useState<chat[]>([]);
     const [ search_notfound, setSearch_notfound ] = useState<string | boolean>(false);
+    const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
 
     // consts
     const { conversation, setConversation, setConversationHistoric } = useContext(ConversationContext);
-    const { userId } = useContext(UserContext);
+    const { userId, setUserId, userName, setUserName } = useContext(UserContext);
     const search_ref = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
 
     // modal
     const [ modal_display, setModal_display ] = useState<boolean>(false);
@@ -84,6 +88,24 @@ const SideBar = () => {
             });
         }
     };
+
+    // login redirect
+    useEffect(() =>{
+        if(loginRedirect){
+            const timeout = setTimeout(() => {
+                modal_config({
+                    title: '', msg: '', btt1: false, 
+                    btt2: false, display: false
+                });  
+
+                navigate('/login');
+            }, 3000);
+
+            return () =>{
+                clearTimeout(timeout);
+            };
+        }
+    }, [loginRedirect]);
 
     // side open
     const side_open = () =>{
@@ -163,8 +185,27 @@ const SideBar = () => {
     };
 
     // exit user
-    const exit = () =>{
-        
+    const exit = async () =>{
+        try{
+            modal_config({
+                title: 'Success ✅', msg: `Adios <${userName}> 👋, \n until next time...`, 
+                btt1: false, btt2: false, display: true
+            });                    
+            
+            const res = await user_logOut();
+            if(res.status === 200){
+                setUserId('');
+                setUserName('');
+                setLoginRedirect(true);
+            }
+        }
+        catch(error){
+            console.log('Error at logOut: ', error);
+            modal_config({
+                title: 'Error ❗', msg: 'Internal error at logOut,\n please try again later!', 
+                btt1: false, btt2: 'Try again', display: true
+            });
+        }
     };
 
 

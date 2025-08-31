@@ -64,3 +64,23 @@ export const user_login = async (userData: IUserLogin): Promise< AxiosResponse<A
         throw new Error('unknown user login fail');      
     }
 };
+
+
+// user logOut
+export const user_logOut = async (): Promise< AxiosResponse<ApiResponse> > =>{
+    try{
+        const response = await axios.get('http://localhost:2140/logOut', { withCredentials: true });
+        return response;
+    }
+    catch(error){
+        if(axios.isAxiosError(error)){
+            const errorMessage = error.response?.data?.errors?.[0] || error.response?.data?.message || error.message;
+            console.error('user logOut failed: ', error.response?.data?.errors?.[0] || error.response?.data?.message); 
+            
+            // repass the error for component
+            throw new Error(errorMessage);
+        }
+
+        throw new Error('unknown user logOut fail');        
+    }
+};
