@@ -49,6 +49,7 @@ const SideBar = () => {
     const [ searchChat_find, setSearchChat_find ] = useState<chat[]>([]);
     const [ search_notfound, setSearch_notfound ] = useState<string | boolean>(false);
     const [ loginRedirect, setLoginRedirect ] = useState<boolean>(false);
+    const [ conversationId, setConversationId ] = useState<string>('');
 
     // consts
     const { conversation, setConversation, setConversationHistoric } = useContext(ConversationContext);
@@ -210,6 +211,26 @@ const SideBar = () => {
         }
     };
 
+    // delete chat modal
+    const deleteChat_modal = (convId: string) =>{
+        setConversationId(convId);
+
+        modal_config({
+            title: 'Wait ❗', msg: 'You sure about delete this chat ?', 
+            btt1: `Yes, I'm sure`, btt2: false, display: true
+        });
+    };
+
+    // delete chat
+    const deleteChat = () =>{
+        modal_config({
+            title: '', msg: '', btt1: false, 
+            btt2: false, display: false
+        });
+        
+        console.log(`chat: ${conversationId} deletado`);
+    };
+
 
     // jsx
 
@@ -224,7 +245,7 @@ const SideBar = () => {
             btt2={ modal_btt_2 }
             display={ modal_display }
             onClose={ closeModal }
-            modalEvent={ closeModal }
+            modalEvent={ deleteChat }
         />
 
         <div className={ styles.sidebar_container }>
@@ -282,7 +303,9 @@ const SideBar = () => {
 
                                 <div className={ styles.interactions_container }>
                                     <span className="material-symbols-outlined">edit</span>
-                                    <span className="material-symbols-outlined">delete</span>
+                                    <span className={ `material-symbols-outlined ${styles.delete_icon}` }>
+                                        delete
+                                    </span>
                                 </div>
                             </div>
                         ))}
@@ -296,7 +319,9 @@ const SideBar = () => {
 
                                 <div className={ styles.interactions_container }>
                                     <span className="material-symbols-outlined">edit</span>
-                                    <span className="material-symbols-outlined">delete</span>
+                                    <span onClick={ () => deleteChat_modal(conv.conversationId) } className={ `material-symbols-outlined ${styles.delete_icon}` }>
+                                        delete
+                                    </span>
                                 </div>
                             </div>
                         )) }
