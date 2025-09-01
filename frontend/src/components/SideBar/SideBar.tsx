@@ -196,6 +196,8 @@ const SideBar = () => {
             if(res.status === 200){
                 setUserId('');
                 setUserName('');
+                setConversation(false);
+                setConversationHistoric([]);
                 setLoginRedirect(true);
             }
         }
@@ -285,7 +287,7 @@ const SideBar = () => {
                                 </p>
                             </Fragment>
                         )) }
-                    </div>
+                    </div>                    
                     </>
                 ) : (
                     <ul>
