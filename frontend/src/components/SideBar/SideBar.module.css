@@ -1,9 +1,7 @@
 @charset "UTF-8";
 
-
 /* scroll bar config */
-
-.scrollbar_div{
+& .scrollbar_div{
     overflow: scroll;
     overflow-x: hidden;
     display: flex;
@@ -13,6 +11,47 @@
     width: 100%;
     padding: 5px 0px 5px 0px;
     transition: all ease-in-out 0.5s;
+
+    & .chat_titles_container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: all ease-in-out 0.3s;
+        
+        & .chat_titles_p{
+            font-size: 17px;
+            font-weight: 400;
+            color: lightgrey;
+            transition: all ease-in-out 0.3s;    
+        }
+        
+        & .interactions_container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 50px;
+            
+            & span{
+                font-size: 20px;
+                color: white;
+                text-shadow: -1px 2px 0px #026194;
+                transition: all ease-in-out 0.2s;
+            }
+            & span:hover{
+                transform: scale(1.05);
+                color: #026194;
+                text-shadow: -1px 2px 0px rgb(0, 0, 0);
+            }
+        }
+    }
+    & .chat_titles_container:hover{
+        transform: scale(1.03);
+        border-radius: 10px;
+    }
 }
 
 /* page */
@@ -33,30 +72,15 @@
         transition: all ease-in-out 0.5s;
     }
 
-    & p{
-        font-size: 16px;
-        font-weight: 400;
-        color: lightgrey;
-        margin-top: 15px;
-        cursor: pointer;
-        transition: all ease-in-out 0.3s;
-    }
-    & p:hover{
-        background-color: #349ed626;
-        padding: 5px;
-        border-radius: 10px;
-        transform: scale(1.05);
-    }
-
     & .chat_p{
-        margin: 0;
+        margin: 0px 0px 20px 0px;
     }
 
     & .open_sidebar{
         margin-top: 0px;
         padding: 0px;
         list-style-type: none;
-        width: 20vw;
+        width: 23vw;
         transition: all ease-in-out 0.05s;
 
         & span{
@@ -138,15 +162,14 @@
 
 .reset_btt{
     width: 100px;
-    margin-top: 8px;
+    margin-top: 30px;
     border: none;
     border-radius: 10px;
     padding: 8px;
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    background-color: transparent;
-    border: 3px solid #199BE2;
+    background-color: #001825;
     transition: all 0.2s;
 }
 .reset_btt:hover{

@@ -157,7 +157,7 @@
     justify-content: space-around;
     align-items: center;
     padding: 1px 0px 1px 0px;
-    width: 60%;
+    width: 70%;
     margin: 20px 0px 20px 0px;
     transition: all ease-in-out 0.5s;
 
@@ -169,8 +169,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 7vh;
-        width: 55px;
+        height: 8vh;
+        width: 60px;
         border-radius: 100%;
         border: none;
         background-color: #a6d5efac;

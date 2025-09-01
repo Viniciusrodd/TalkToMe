@@ -3,7 +3,7 @@
 import styles from './SideBar.module.css';
 
 // hooks
-import React, { useState, useContext, useEffect, Fragment, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getConversations } from '../../hooks/useGetConversations'; // custom hook
 
@@ -272,20 +272,33 @@ const SideBar = () => {
                                 reset
                             </button>
                         ) }
+                        
+                        {/* searched chats conversations */}
                         { searchChat_find.length > 0 && searchChat_find.map(chat =>(
-                            <Fragment key={ chat.conversationId }>
-                                <p onClick={ () => historicConversationRedirect(chat.conversationId) }>
+                            <div className={ styles.chat_titles_container }  key={ chat.conversationId }>
+                                <p className={ styles.chat_titles } onClick={ () => historicConversationRedirect(chat.conversationId) }>
                                     { chat.title }
                                 </p>
-                            </Fragment>
+
+                                <div className={ styles.interactions_container }>
+                                    <span className="material-symbols-outlined">edit</span>
+                                    <span className="material-symbols-outlined">delete</span>
+                                </div>
+                            </div>
                         ))}
 
+                        {/* all chats conversations */}
                         { searchChat_find.length === 0 && !search_notfound && conversations && conversations.map((conv) =>(
-                            <Fragment key={ conv.conversationId }>
-                                <p onClick={ () => historicConversationRedirect(conv.conversationId) }>
+                            <div className={ styles.chat_titles_container } key={ conv.conversationId }>
+                                <p className={ styles.chat_titles_p } onClick={ () => historicConversationRedirect(conv.conversationId) }>
                                     { conv.title }
                                 </p>
-                            </Fragment>
+
+                                <div className={ styles.interactions_container }>
+                                    <span className="material-symbols-outlined">edit</span>
+                                    <span className="material-symbols-outlined">delete</span>
+                                </div>
+                            </div>
                         )) }
                     </div>                    
                     </>
