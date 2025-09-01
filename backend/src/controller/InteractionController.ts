@@ -344,6 +344,58 @@ class InteractionController{
             });
         }
     }
+
+
+    // delete chat
+    async deleteChat(
+        req: Request,
+        res: Response<ApiResponse>
+    ){
+        const conversation_id = req.params.conversationID;
+        if(!conversation_id){
+            return res.status(400).send({
+                success: false,
+                message: 'Bad request at params sended'
+            });
+        }
+
+        try{
+            // check conversations existence
+            const conversation = await models.Conversation.findByPk(conversation_id);
+            if(!conversation){
+                return res.status(204).send({
+                    success: true,
+                    message: 'Conversation not found'
+                });
+            }
+
+            // delete conversation + messages
+            await connection.transaction(async (t) =>{
+                await models.Message.destroy({
+                    where: { conversationId: conversation_id },
+                    transaction: t
+                });               
+                
+                await models.Conversation.destroy({
+                    where: { id: conversation_id },
+                    transaction: t
+                });                
+            });
+
+            return res.status(200).send({
+                success: true,
+                message: 'Destroy conversation success',
+            });
+        }
+        catch(error: unknown){
+            console.error('Internal server error at Delete chat: ', error);
+            return res.status(500).send({
+                success: false,
+                message: 'Internal server error at Delete chat',
+                errorMessage: this.getErrorMessage(error)
+            });
+        }
+    }
 };
 
 

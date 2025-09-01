@@ -33,6 +33,7 @@ router.get('/logOut', verifyToken, UserController.logOut);
 router.post('/chatInterection', verifyToken, InteractionController.chatInteraction);
 router.get('/conversations/:userID', verifyToken, InteractionController.getConversations);
 router.get('/conversation/:userID/:title', verifyToken, InteractionController.searchConversation);
+router.delete('/conversation/:conversationID', verifyToken, InteractionController.deleteChat);
 
 
 // export
