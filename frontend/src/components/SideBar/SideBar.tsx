@@ -52,7 +52,7 @@ const SideBar = () => {
     const [ conversationId, setConversationId ] = useState<string>('');
 
     // consts
-    const { conversation, setConversation, setConversationHistoric } = useContext(ConversationContext);
+    const { conversation, setConversation, setConversationHistoric, conversationsShow, setConversationsShow } = useContext(ConversationContext);
     const { userId, setUserId, userName, setUserName } = useContext(UserContext);
     const search_ref = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
@@ -131,8 +131,17 @@ const SideBar = () => {
     };
 
     // get conversations
-    const { conversations, setConversations, errorResConv } = getConversations(userId);
+    const { 
+        conversations, setConversations, errorResConv 
+    } = getConversations(userId);
     useEffect(() =>{
+        if(conversations.length > 0){
+            setConversationsShow(conversations.map(conv =>({
+                conversationId: conv.conversationId,
+                title: conv.title
+            })));
+        }
+
         if(errorResConv){
             console.log('Error at get conversations historic: ', errorResConv);
             modal_config({
@@ -145,6 +154,10 @@ const SideBar = () => {
     // historic conversation redirect
     const historicConversationRedirect = (conversationId: string | undefined) =>{
         if(conversationId !== ''){
+            console.log('----------------------')
+            console.log('conversation id: ', conversationId)
+            console.log('----------------------')
+            
             const conversationFiltered = conversations.filter(conv => conv.conversationId === conversationId);
 
             setConversation(true);
@@ -232,7 +245,7 @@ const SideBar = () => {
             const res = await delete_chat(conversationId);
             if(res.status === 200){
                 setConversation(false);
-                setConversations(conversations.filter(conv => conv.conversationId !== conversationId));
+                setConversationsShow(conversationsShow.filter(conv => conv.conversationId !== conversationId));
             }
         }
         catch(error){
@@ -324,7 +337,7 @@ const SideBar = () => {
                         ))}
 
                         {/* all chats conversations */}
-                        { searchChat_find.length === 0 && !search_notfound && conversations && conversations.map((conv) =>(
+                        { searchChat_find.length === 0 && !search_notfound && conversationsShow && conversationsShow.map((conv) =>(
                             <div className={ styles.chat_titles_container } key={ conv.conversationId }>
                                 <p className={ styles.chat_titles_p } onClick={ () => historicConversationRedirect(conv.conversationId) }>
                                     { conv.title }

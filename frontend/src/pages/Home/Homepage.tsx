@@ -56,7 +56,7 @@ const Homepage = () => {
     // consts
     const navigate = useNavigate();
     const { userName, setUserName, userId, setUserId } = useContext(UserContext);
-    const { conversation, setConversation, conversationHistoric } = useContext(ConversationContext);
+    const { conversation, setConversation, conversationHistoric, setConversationsShow } = useContext(ConversationContext);
     const conversationContainerRef = useRef<HTMLDivElement>(null);
     const { loading, setLoading } = useContext(LoadingContext);
 
@@ -263,7 +263,6 @@ const Homepage = () => {
                 // set current conversation id
                 if(!conversationId && res.data.data?.conversationId){
                     setConversationId(res.data.data?.conversationId);
-                    // chat title
                     setTitleChat(res.data.data?.title || '');
                 }
                 
@@ -272,6 +271,17 @@ const Homepage = () => {
                     sender: 'llm',
                     content: res.data.data?.llm_result || ''
                 }]);
+
+                // set sidebar conversationShow datas, (avoiding duplicates)
+                setConversationsShow(prev => {
+                    const exists = prev.some(c => c.conversationId === res.data.data?.conversationId);
+                    if(exists) return prev;
+                    
+                    return [...prev, {
+                        conversationId: res.data.data?.conversationId || '',
+                        title: res.data.data?.title || ''
+                    }];
+                });
 
                 // set file
                 if(file) setFile(null);

@@ -17,6 +17,13 @@ interface conversationHistoric{
     }[];
 };
 
+// conversation exibition
+interface iConversationShow{
+    conversationId: string;
+    title: string;
+}
+
+
 // type
 type ConversationContextType = {
     conversation: boolean,
@@ -24,6 +31,9 @@ type ConversationContextType = {
 
     conversationHistoric: conversationHistoric[],
     setConversationHistoric: (historic: conversationHistoric[]) => void;
+
+    conversationsShow: iConversationShow[],
+    setConversationsShow: React.Dispatch<React.SetStateAction<iConversationShow[]>>;
 };
 
 // export context
@@ -32,7 +42,10 @@ export const ConversationContext = createContext<ConversationContextType>({
     setConversation: () => {},
 
     conversationHistoric: [],
-    setConversationHistoric: () => {}
+    setConversationHistoric: () => {},
+
+    conversationsShow: [],
+    setConversationsShow: () => {}
 });
 
 // props provider
@@ -46,11 +59,14 @@ export const ConversationProvider = ({ children }: ConversationPropsProvider) =>
     // states
     const [ conversation, setConversation ] = useState<boolean>(false);
     const [ conversationHistoric, setConversationHistoric ] = useState<conversationHistoric[]>([]);
-
+    const [ conversationsShow, setConversationsShow ] = useState<iConversationShow[]>([]);
+    
 
     return(
         <ConversationContext.Provider value={{ 
-            conversation, setConversation, conversationHistoric, setConversationHistoric 
+            conversation, setConversation, 
+            conversationHistoric, setConversationHistoric,
+            conversationsShow, setConversationsShow
         }}>
             { children }
         </ConversationContext.Provider>

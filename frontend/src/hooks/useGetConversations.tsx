@@ -50,7 +50,7 @@ export const getConversations = (userID: string) =>{
                         { withCredentials: true }
                     );
                     if(res.data.success && res.data.data){
-                        setConversations(res.data.data);
+                        setConversations(res.data.data);                        
                         setLoading(false);
                     }
                 }
