@@ -87,3 +87,25 @@ export const search_chat_service = async (userID: string, title: string): Promis
         throw new Error('unknown search chat fail');
     }
 };
+
+
+// delete chat
+export const delete_chat = async (conversationID: string): Promise<AxiosResponse<ApiResponse>> =>{
+    try{
+        const response = await axios.delete(
+            `http://localhost:2140/conversation/${conversationID}`, 
+            { withCredentials: true }
+        );
+        return response;
+    }
+    catch(error){
+        if(axios.isAxiosError(error)){
+            const errorMessage = error.response?.data?.message || error.message;
+            console.error('chat delete failed: ', errorMessage);
+
+            // repass the error for component
+            throw new Error(errorMessage);   
+        }
+        throw new Error('unknown delete chat fail');
+    }
+};

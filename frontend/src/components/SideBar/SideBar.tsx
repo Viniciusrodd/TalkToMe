@@ -227,6 +227,8 @@ const SideBar = () => {
             title: '', msg: '', btt1: false, 
             btt2: false, display: false
         });
+        setConversation(false);
+        // split in conversation historic...
         
         console.log(`chat: ${conversationId} deletado`);
     };
