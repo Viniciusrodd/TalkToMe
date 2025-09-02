@@ -71,5 +71,5 @@ export const getConversations = (userID: string) =>{
     }, [userID]);
 
 
-    return { conversations, errorResConv };
+    return { conversations, setConversations, errorResConv };
 };

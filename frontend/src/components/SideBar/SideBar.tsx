@@ -15,7 +15,7 @@ import { UserContext } from '../../context/UserContext';
 import { ConversationContext } from '../../context/ConversationContext';
 
 // service
-import { search_chat_service } from '../../services/ChatService';
+import { search_chat_service, delete_chat } from '../../services/ChatService';
 import { user_logOut } from '../../services/AuthService';
 
 
@@ -131,7 +131,7 @@ const SideBar = () => {
     };
 
     // get conversations
-    const { conversations, errorResConv } = getConversations(userId);
+    const { conversations, setConversations, errorResConv } = getConversations(userId);
     useEffect(() =>{
         if(errorResConv){
             console.log('Error at get conversations historic: ', errorResConv);
@@ -140,7 +140,7 @@ const SideBar = () => {
                 btt1: false, btt2: 'Try again', display: true
             });
         }
-    }, [ conversations, errorResConv ]);
+    }, [ conversations, setConversations, errorResConv ]);
 
     // historic conversation redirect
     const historicConversationRedirect = (conversationId: string | undefined) =>{
@@ -222,15 +222,26 @@ const SideBar = () => {
     };
 
     // delete chat
-    const deleteChat = () =>{
+    const deleteChat = async () =>{
         modal_config({
             title: '', msg: '', btt1: false, 
             btt2: false, display: false
         });
-        setConversation(false);
-        // split in conversation historic...
-        
-        console.log(`chat: ${conversationId} deletado`);
+                
+        try{
+            const res = await delete_chat(conversationId);
+            if(res.status === 200){
+                setConversation(false);
+                setConversations(conversations.filter(conv => conv.conversationId !== conversationId));
+            }
+        }
+        catch(error){
+            console.log('Error at delete chat: ', error);
+            modal_config({
+                title: 'Error ❗', msg: 'Internal error at delete chat,\n please try again later!', 
+                btt1: false, btt2: 'Try again', display: true
+            });
+        }
     };
 
 
