@@ -5,6 +5,9 @@ O **TalkToMe** é um website moderno para **conversar com uma LLM rodando localm
 Tem como foco a **privacidade, performance e controle total dos dados**.
 
 
+![Homepage do projeto](./frontend/public/images/homepage.png)
+
+
 ## 🌟 Propósito desse projeto
 
 Criado para que qualquer pessoa possa rodar uma inteligência artificial no próprio computador, sem depender de serviços externos.  
@@ -14,6 +17,8 @@ Isso garante **segurança, independência e flexibilidade** para estudos, experi
 - ⚡ **Rapidez** - sem latência de rede externa.
 - 🛠️ **Controle total** - personalizável e extensível.
 - 💻 **Open-source** - feito para aprender, colaborar e evoluir.
+
+![Homepage do projeto](./frontend/public/images/chattalk.png)
 
 
 ## 🛠️ Funcionalidades principais
