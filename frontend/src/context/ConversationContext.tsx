@@ -13,7 +13,7 @@ interface conversationHistoric{
         messageId: string;
         sender: string;
         content: string;
-        createdAt?: Date;
+        createdAt?: String;
     }[];
 };
 

@@ -164,7 +164,7 @@ class InteractionController{
                 sender: 'llm',
                 tokensUsed: result.length,
                 content: result,
-                createdAt: new Date()
+                createdAt: new Date(Date.now() + 2000) // +seg
             });
 
             return res.status(200).send({
@@ -284,50 +284,38 @@ class InteractionController{
             }
 
             // conversation existence check
-            let conversation_id = [];
-            const conversation = await models.Conversation.findAll({ 
+            const conversations = await models.Conversation.findAll({ 
                 where: { 
                     title: { [Op.like]: `%${title}%` } 
-                }
+                },
+                include: [{
+                    model: models.Message,
+                    as: 'messages'
+                }],
+                order: [
+                    [ 'createdAt', 'ASC' ], // conversation order - older to new
+                    [ { model: models.Message, as: 'messages' }, 'createdAt', 'ASC' ] // messages order
+                ]
             });
-            if(!conversation || conversation.length === 0){
+            if(!conversations || conversations.length === 0){
                 return res.status(204).send({
                     success: true,
                     message: 'Conversation not found'
                 });
             }
 
-            // set conversations id
-            conversation_id = conversation.map(conv => conv.id);
-
-            // get messages from conversation
-            const messages = await models.Message.findAll({
-                where: { 
-                    conversationId: {
-                        [Op.in]: conversation_id
-                    } 
-                },
-                order: [
-                    [ 'createdAt', 'ASC' ]
-                ]
-            });
-
             // format response    
-            const formatResponse = conversation.map(conv => {
-                const conversationMessages = messages.filter(msg => msg.conversationId === conv.id);
-                
-                return {
-                    conversationId: conv.id,
-                    title: conv.title,
-                    conversationCreatedAt: conv.createdAt,
-                    messages: conversationMessages.map(msg => ({
-                        messageId: msg.id,
-                        sender: msg.sender,
-                        content: msg.content,
-                        createdAt: msg.createdAt
-                    }))
-                };
-            });
+            const formatResponse = conversations.map(conv => ({
+                conversationId: conv.id,
+                title: conv.title,
+                conversationCreatedAt: conv.createdAt,
+                messages: (conv.messages || []).map(msg => ({
+                    messageId: msg.id,
+                    sender: msg.sender,
+                    content: msg.content,
+                    createdAt: msg.createdAt
+                }))
+            }));
 
             return res.status(200).send({
                 success: true,

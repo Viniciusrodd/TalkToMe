@@ -38,7 +38,7 @@ const Homepage = () => {
         messageId?: string;
         sender: string;
         content: string;
-        createdAt?: Date;
+        createdAt?: String;
     };
 
 
@@ -258,6 +258,9 @@ const Homepage = () => {
             // service call
             const res = await chat_interaction(data);
             setLoading(false);
+
+            // clear message
+            setMesageValue('');
             
             if(res.status === 200){
                 // set current conversation id
@@ -297,9 +300,6 @@ const Homepage = () => {
                 });
             }
         }
-
-        // clear message
-        setMesageValue('');
     };
 
     // clear on conversation desactive
