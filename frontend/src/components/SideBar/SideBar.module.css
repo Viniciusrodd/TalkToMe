@@ -20,7 +20,7 @@
         width: 80%;
         margin-bottom: 20px;
         cursor: pointer;
-        transition: all ease-in-out 0.3s;
+        transition: all ease-in-out 0.4s;
         
         & .chat_titles_p{
             font-size: 17px;
@@ -39,7 +39,7 @@
                 font-size: 22px;
                 color: white;
                 text-shadow: -1px 2px 0px #026194;
-                transition: all ease-in-out 0.2s;
+                transition: all ease-in-out 0.1s;
             }
             & span:hover{
                 transform: scale(1.05);
@@ -52,8 +52,9 @@
         }
     }
     & .chat_titles_container:hover{
+        padding: 5px;
+        background-image: linear-gradient(to right, transparent, #7cbee164, transparent);
         transform: scale(1.04);
-        border-radius: 10px;
     }
 }
 
