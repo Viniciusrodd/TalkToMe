@@ -164,12 +164,10 @@ class UserController{
             res.cookie('token', tokenVar,{
                 httpOnly: true, // preventing access via JavaScript, avoiding XSS, (only server)
                 sameSite: 'strict', // protects against CSRF
+                // secure: true, // só envia em HTTPS
                 maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days                
             });
 
-            console.log('_____________________');
-            console.log('User login success');
-            console.log('_____________________');
             return res.status(200).send({
                 success: true,
                 message: 'User login success',

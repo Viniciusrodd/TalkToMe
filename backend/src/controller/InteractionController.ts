@@ -286,6 +286,7 @@ class InteractionController{
             // conversation existence check
             const conversations = await models.Conversation.findAll({ 
                 where: { 
+                    userId: userID,
                     title: { [Op.like]: `%${title}%` } 
                 },
                 include: [{

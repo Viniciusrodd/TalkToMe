@@ -404,7 +404,7 @@ const Homepage = () => {
                     }>
                         <input title='file' type="file" name="add_file" id='add_file' className={ styles.file_input } 
                         onChange={ uploadFile } accept=".txt,.csv,.json,.xml,.pdf,.docx,.pptx,.xlsx,.md,.py,.js,.html,.css,.sql,.eml"/>
-                        <button type='button' className={ styles.utils }>
+                        <button type='button' className={ styles.utils } title='Add file'>
                             <label htmlFor="add_file">
                                 <span className="material-symbols-outlined">add</span>
                             </label>
@@ -423,7 +423,7 @@ const Homepage = () => {
                                 </span>
                             </button>
                         ) : (
-                            <button type='button' className={ styles.utils }>
+                            <button type='button' className={ `${styles.utils} tooltip` } title='Typing...'>
                                 <span className="material-symbols-outlined">edit</span>
                             </button>
                         ) }

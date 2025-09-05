@@ -333,7 +333,6 @@ const SideBar = () => {
                                 </p>
 
                                 <div className={ styles.interactions_container }>
-                                    <span className="material-symbols-outlined">edit</span>
                                     <span className={ `material-symbols-outlined ${styles.delete_icon}` }>
                                         delete
                                     </span>
@@ -350,7 +349,6 @@ const SideBar = () => {
                                 </p>
 
                                 <div className={ styles.interactions_container }>
-                                    <span className="material-symbols-outlined">edit</span>
                                     <span onClick={ () => deleteChat_modal(conv.conversationId) } className={ `material-symbols-outlined ${styles.delete_icon}` }>
                                         delete
                                     </span>
@@ -373,7 +371,7 @@ const SideBar = () => {
                             <span className="material-symbols-outlined">chat_add_on</span>
                         </li>
 
-                        <li className={ styles.exit_li } onClick={ exit }>
+                        <li className={ styles.exit_li } onClick={ exit } title='Exit'>
                             <span className="material-symbols-outlined">exit_to_app</span>
                         </li>
                     </ul>

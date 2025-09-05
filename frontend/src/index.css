@@ -56,3 +56,34 @@ div::-webkit-scrollbar-thumb:hover {
 div::-webkit-scrollbar-thumb:active {
   background-color: #0D80E2;
 }
+
+
+/* tooltip */
+
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 120%; /* acima do elemento */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 20px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
