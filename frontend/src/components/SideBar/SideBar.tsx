@@ -283,7 +283,7 @@ const SideBar = () => {
                 isOpen ? (
                     <>
                     <ul className={ styles.open_sidebar }>
-                        <li onClick={ side_open }>
+                        <li onClick={ side_open } className='tooltip' data-tooltip='Close'>
                             <span className="material-symbols-outlined">dock_to_left</span>
                         </li>
                         {
@@ -332,7 +332,7 @@ const SideBar = () => {
                                     { chat.title }
                                 </p>
 
-                                <div className={ styles.interactions_container }>
+                                <div className={ `${styles.interactions_container} tooltip` } data-tooltip='Delete'>
                                     <span className={ `material-symbols-outlined ${styles.delete_icon}` }>
                                         delete
                                     </span>
@@ -348,7 +348,7 @@ const SideBar = () => {
                                     { conv.title }
                                 </p>
 
-                                <div className={ styles.interactions_container }>
+                                <div className={ `${styles.interactions_container} tooltip` } data-tooltip='Delete'>
                                     <span onClick={ () => deleteChat_modal(conv.conversationId) } className={ `material-symbols-outlined ${styles.delete_icon}` }>
                                         delete
                                     </span>
@@ -359,19 +359,19 @@ const SideBar = () => {
                     </>
                 ) : (
                     <ul>
-                        <li onClick={ side_open }>
+                        <li onClick={ side_open } className='tooltip' data-tooltip='Open'>
                             <span className="material-symbols-outlined">dock_to_right</span>
                         </li>
 
-                        <li onClick={ search_chat }>
+                        <li onClick={ search_chat } className='tooltip' data-tooltip='Search...'>
                             <span className="material-symbols-outlined">search</span>
                         </li>
 
-                        <li onClick={ new_conversation }>
+                        <li onClick={ new_conversation } className='tooltip' data-tooltip='New chat'>
                             <span className="material-symbols-outlined">chat_add_on</span>
                         </li>
 
-                        <li className={ styles.exit_li } onClick={ exit } title='Exit'>
+                        <li className={ `${styles.exit_li} tooltip` } onClick={ exit } data-tooltip='Exit'>
                             <span className="material-symbols-outlined">exit_to_app</span>
                         </li>
                     </ul>

@@ -8,7 +8,7 @@ const NavBar = () => {
     return (
         <div className={ styles.navbar_container }>
             <div>
-                <img src='../../../images/util_images/robot.png' alt="Hello ilustration" />
+                <img src='../../../images/favicon.png' alt="Hello ilustration" />
                 <h1>Hey, talk to me ?</h1>
             </div>
         </div>

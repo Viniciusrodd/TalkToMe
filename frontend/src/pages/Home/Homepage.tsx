@@ -404,7 +404,7 @@ const Homepage = () => {
                     }>
                         <input title='file' type="file" name="add_file" id='add_file' className={ styles.file_input } 
                         onChange={ uploadFile } accept=".txt,.csv,.json,.xml,.pdf,.docx,.pptx,.xlsx,.md,.py,.js,.html,.css,.sql,.eml"/>
-                        <button type='button' className={ styles.utils } title='Add file'>
+                        <button type='button' className={ `${styles.utils} tooltip` } data-tooltip='Add file' >
                             <label htmlFor="add_file">
                                 <span className="material-symbols-outlined">add</span>
                             </label>
@@ -417,13 +417,13 @@ const Homepage = () => {
 
 
                         { showSendIcon ? (
-                            <button onClick={ send_message } type='button' className={ styles.utils }>
+                            <button onClick={ send_message } type='button' className={ `${styles.utils} tooltip` } data-tooltip='Send'>
                                 <span className={`material-symbols-outlined`}>
                                     arrow_upward
                                 </span>
                             </button>
                         ) : (
-                            <button type='button' className={ `${styles.utils} tooltip` } title='Typing...'>
+                            <button type='button' className={ `${styles.utils} tooltip` } data-tooltip='Typing...'>
                                 <span className="material-symbols-outlined">edit</span>
                             </button>
                         ) }
