@@ -2,8 +2,6 @@
 
 O **TalkToMe** é um website moderno para **conversar com uma LLM rodando localmente** através do **Ollama Mistral**, oferecendo uma experiência parecida ao próprio ChatGPT, mas **100% local e privada**.  
 
-Tem como foco a **privacidade, performance e controle total dos dados**.
-
 
 ![Homepage do projeto](./frontend/public/images/homepage.png)
 
@@ -32,7 +30,6 @@ Isso garante **segurança, independência e flexibilidade** para estudos, experi
 
 ### ⚙️ Administrador - (tarefas futuras)
 
-- **Gerenciar usuários** - criar, bloquear e listar contas. (implementação futura)
 - **Monitorar consumo** - acompanhar estatísticas de uso. (implementação futura)
 - **Configurar modelos** - escolher entre diferentes LLMs disponíveis no Ollama. (implementação futura)
 
@@ -49,7 +46,7 @@ Isso garante **segurança, independência e flexibilidade** para estudos, experi
 
 ## 🖥️ Tecnologias utilizadas
 
-### 🖼️ Frontend (React)
+### 🖼️ Frontend (React + TypeScript)
 - **React 19 + Vite** - desenvolvimento rápido e moderno.
 - **React Router DOM 7** - navegação SPA.
 - **Axios** - integração com o backend.
